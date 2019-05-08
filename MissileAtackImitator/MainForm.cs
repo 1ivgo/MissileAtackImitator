@@ -10,7 +10,9 @@ namespace MissileAtackImitator
         private Controller controller = null;
         private ScenePoints userPoints = null;
         private Airplane airplane = null;
-        private BufferedGraphics bufferedGraphics;
+        private BufferedGraphicsContext bufferedGraphicsContext = null;
+        private BufferedGraphics bufferedGraphics = null;
+        private Graphics graphics = null;
 
         public MainForm()
         {
@@ -25,8 +27,8 @@ namespace MissileAtackImitator
                 IsWithString = true
             };
 
-            Graphics graphics = splitContainer.Panel2.CreateGraphics();
-            var bufferedGraphicsContext = new BufferedGraphicsContext();
+            graphics = splitContainer.Panel2.CreateGraphics();
+            bufferedGraphicsContext = new BufferedGraphicsContext();
             bufferedGraphics = bufferedGraphicsContext.Allocate(
                 graphics, 
                 new Rectangle(0, 0, splitContainer.Panel2.Width, splitContainer.Panel2.Height));
@@ -110,12 +112,19 @@ namespace MissileAtackImitator
         private void TsbtClear_Click(object sender, System.EventArgs e)
         {
             airplane = null;
-            userPoints = null;
+            userPoints.Clear();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.Save();
+        }
+
+        private void MainForm_Resize(object sender, System.EventArgs e)
+        {
+            bufferedGraphics = bufferedGraphicsContext.Allocate(
+                graphics,
+                new Rectangle(0, 0, splitContainer.Panel2.Width, splitContainer.Panel2.Height));
         }
     }
 }
