@@ -36,10 +36,13 @@
             this.tsbtSettings = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -105,10 +108,22 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.AutoScroll = true;
-            this.splitContainer.Panel2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.splitContainer1_Panel2_MouseDoubleClick);
+            this.splitContainer.Panel2.Controls.Add(this.pictureBox);
             this.splitContainer.Size = new System.Drawing.Size(875, 414);
             this.splitContainer.SplitterDistance = 277;
             this.splitContainer.TabIndex = 2;
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox.Location = new System.Drawing.Point(0, -2);
+            this.pictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(583, 410);
+            this.pictureBox.TabIndex = 0;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDoubleClick);
             // 
             // timer
             // 
@@ -127,10 +142,13 @@
             this.Name = "MainForm";
             this.Text = "MissileAtackImitator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,6 +163,7 @@
         private System.Windows.Forms.ToolStripButton tsbtPlay;
         private System.Windows.Forms.ToolStripButton tsbtClear;
         private System.Windows.Forms.ToolStripButton tsbtSettings;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }
 
