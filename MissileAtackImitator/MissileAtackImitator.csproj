@@ -98,9 +98,6 @@
     <None Include="Resources\FighterJet.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="trajectorygenerator.py" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Settings.png" />
   </ItemGroup>
   <ItemGroup>

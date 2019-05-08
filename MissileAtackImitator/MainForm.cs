@@ -47,6 +47,11 @@ namespace MissileAtackImitator
             return filename;
         }
 
+        internal void ShowError(string message, string tittle)
+        {
+            MessageBox.Show(message, tittle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
         private void Draw()
         {
             bufferedGraphics.Graphics.Clear(Color.White);
@@ -78,15 +83,20 @@ namespace MissileAtackImitator
                     "Внимание",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
+
                 return;
             }
 
-            ScenePoints airplanPoints = controller.GetTrajectory(userPoints);
-            airplanPoints.Size = new Size(1, 1);
-            airplanPoints.Brush = Brushes.Black;
-            airplanPoints.IsWithString = false;
+            ScenePoints airplanePoints = controller.GetTrajectory(userPoints);
 
-            airplane = new Airplane(airplanPoints);
+            if (airplanePoints == null)
+                return;
+
+            airplanePoints.Size = new Size(1, 1);
+            airplanePoints.Brush = Brushes.Black;
+            airplanePoints.IsWithString = false;
+
+            airplane = new Airplane(airplanePoints);
             airplane.Index = 0;
 
             Draw();
@@ -94,10 +104,7 @@ namespace MissileAtackImitator
 
         private void TsBtSettings_Click(object sender, System.EventArgs e)
         {
-            var filter = "Python files (*.py)|*.py";
-            var title = "Выберите файл скрипта";
-            string pythonScriptFilename = ShowOpenFileDialog(filter, title);
-            Settings.Default.PythonScriptPath = pythonScriptFilename;
+            controller.ChangePythonScriptFilename();
         }
 
         private void TsbtClear_Click(object sender, System.EventArgs e)

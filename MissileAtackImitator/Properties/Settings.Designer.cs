@@ -26,12 +26,12 @@ namespace MissileAtackImitatorNS.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PythonScriptPath {
+        public string PythonScriptFilename {
             get {
-                return ((string)(this["PythonScriptPath"]));
+                return ((string)(this["PythonScriptFilename"]));
             }
             set {
-                this["PythonScriptPath"] = value;
+                this["PythonScriptFilename"] = value;
             }
         }
     }

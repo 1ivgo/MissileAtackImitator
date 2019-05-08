@@ -5,7 +5,9 @@ python3 trajectorygenerator.py requestFileName responseFileName
 """
 
 import sys
+import os
 import json
+from datetime import datetime
 from bezier import Curve
 import numpy as np
 
@@ -14,7 +16,7 @@ def calculateImitation(requestFileName, responseFileName):
     requestFile = open(requestFileName)
     request = json.load(requestFile)
     
-    curvesBasisPoints = np.hstack(tuple(map(requestPointToNPPoint, request['UserPoints'])))
+    curvesBasisPoints = np.hstack(tuple(map(requestPointToNPPoint, request['AircraftPoints'])))
 
     # import pdb; pdb.set_trace()
 
