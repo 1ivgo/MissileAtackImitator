@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.tsbtPlay = new System.Windows.Forms.ToolStripButton();
+            this.tsbtClear = new System.Windows.Forms.ToolStripButton();
+            this.tsbtSettings = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.timer = new System.Windows.Forms.Timer(this.components);
@@ -46,41 +46,45 @@
             // 
             this.toolStrip.AutoSize = false;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2,
-            this.toolStripButton3});
+            this.tsbtPlay,
+            this.tsbtClear,
+            this.tsbtSettings});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(875, 50);
             this.toolStrip.TabIndex = 0;
             // 
-            // toolStripButton1
+            // tsbtPlay
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 47);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.tsbtPlay.AutoSize = false;
+            this.tsbtPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtPlay.Image = global::MissileAtackImitatorNS.Properties.Resources.Play;
+            this.tsbtPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtPlay.Name = "tsbtPlay";
+            this.tsbtPlay.Size = new System.Drawing.Size(47, 47);
+            this.tsbtPlay.ToolTipText = "Начать имитацию";
+            this.tsbtPlay.Click += new System.EventHandler(this.TsbtPlay_Click);
             // 
-            // toolStripButton2
+            // tsbtClear
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 47);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.tsbtClear.AutoSize = false;
+            this.tsbtClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtClear.Image = global::MissileAtackImitatorNS.Properties.Resources.Cross;
+            this.tsbtClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtClear.Name = "tsbtClear";
+            this.tsbtClear.Size = new System.Drawing.Size(47, 47);
+            this.tsbtClear.Click += new System.EventHandler(this.TsbtClear_Click);
             // 
-            // toolStripButton3
+            // tsbtSettings
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 47);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.tsbtSettings.AutoSize = false;
+            this.tsbtSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtSettings.Image = global::MissileAtackImitatorNS.Properties.Resources.Settings;
+            this.tsbtSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtSettings.Name = "tsbtSettings";
+            this.tsbtSettings.Size = new System.Drawing.Size(47, 47);
+            this.tsbtSettings.ToolTipText = "Настройки";
+            this.tsbtSettings.Click += new System.EventHandler(this.TsBtSettings_Click);
             // 
             // statusStrip
             // 
@@ -101,7 +105,6 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.AutoScroll = true;
-            this.splitContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer.Panel2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.splitContainer1_Panel2_MouseDoubleClick);
             this.splitContainer.Size = new System.Drawing.Size(875, 414);
             this.splitContainer.SplitterDistance = 277;
@@ -123,6 +126,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "MissileAtackImitator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -138,9 +142,9 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton tsbtPlay;
+        private System.Windows.Forms.ToolStripButton tsbtClear;
+        private System.Windows.Forms.ToolStripButton tsbtSettings;
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.IO;
+using System.Runtime.Serialization;
 
 namespace MissileAtackImitatorCoreNS
 {
@@ -8,10 +9,11 @@ namespace MissileAtackImitatorCoreNS
         [DataMember(Order = 0)]
         public ScenePoints AircraftTrajectory { get; private set; }
 
-        public ScenePoints GetResponse(string filePath)
+        public ScenePoints GetResponse(string filename)
         {
-            var response = JsonSaverLoader.Load<ImitationResponse>(filePath);
+            var response = JsonSaverLoader.Load<ImitationResponse>(filename);
             AircraftTrajectory = response.AircraftTrajectory;
+            File.Delete(filename);
             return AircraftTrajectory;
         }
     }

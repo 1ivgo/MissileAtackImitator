@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Airplane.cs" />
+    <Compile Include="SceneObjects\Airplane.cs" />
     <Compile Include="ImitationRequest.cs" />
     <Compile Include="ImitationResponse.cs" />
     <Compile Include="JsonSaverLoader.cs" />
@@ -51,11 +51,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScenePoints.cs" />
+    <Compile Include="SceneObjects\IDrawer.cs" />
+    <Compile Include="SceneObjects\ScenePoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
