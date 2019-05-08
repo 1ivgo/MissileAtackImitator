@@ -27,11 +27,9 @@ namespace MissileAtackImitator
                 IsWithString = true
             };
 
-            graphics = splitContainer.Panel2.CreateGraphics();
+            graphics = pictureBox.CreateGraphics();
             bufferedGraphicsContext = new BufferedGraphicsContext();
-            bufferedGraphics = bufferedGraphicsContext.Allocate(
-                graphics, 
-                new Rectangle(0, 0, splitContainer.Panel2.Width, splitContainer.Panel2.Height));
+            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
         }
 
         internal string ShowOpenFileDialog(string filter, string title)
@@ -62,10 +60,17 @@ namespace MissileAtackImitator
             bufferedGraphics.Render();
         }
 
-        private void splitContainer1_Panel2_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ReshapePictureBox()
         {
-            userPoints.Add(new Point(e.X, e.Y));
-            Draw();
+            int newWidth = splitContainer.Panel2.Width - 4;
+            int newHeight = splitContainer.Panel2.Height - 4;
+
+            if (newWidth > pictureBox.Width || newHeight > pictureBox.Height)
+            {
+                pictureBox.Width = newWidth;
+                pictureBox.Height = newHeight;
+                bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, newWidth, newHeight));
+            }
         }
 
         private void timer_Tick(object sender, System.EventArgs e)
@@ -122,9 +127,13 @@ namespace MissileAtackImitator
 
         private void MainForm_Resize(object sender, System.EventArgs e)
         {
-            bufferedGraphics = bufferedGraphicsContext.Allocate(
-                graphics,
-                new Rectangle(0, 0, splitContainer.Panel2.Width, splitContainer.Panel2.Height));
+            ReshapePictureBox();
+        }
+
+        private void pictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            userPoints.Add(new Point(e.X, e.Y));
+            Draw();
         }
     }
 }
