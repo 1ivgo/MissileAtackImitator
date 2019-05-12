@@ -63,6 +63,16 @@ namespace MissileAtackImitatorNS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Cancell {
+            get {
+                object obj = ResourceManager.GetObject("Cancell", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cross {
             get {
                 object obj = ResourceManager.GetObject("Cross", resourceCulture);
@@ -77,6 +87,26 @@ namespace MissileAtackImitatorNS.Properties {
             get {
                 object obj = ResourceManager.GetObject("Missile", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Missile1 {
+            get {
+                object obj = ResourceManager.GetObject("Missile1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PlaceMarker {
+            get {
+                object obj = ResourceManager.GetObject("PlaceMarker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

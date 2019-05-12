@@ -53,7 +53,6 @@ namespace MissileAtackImitator
             bufferedGraphics.Graphics.Clear(Color.White);
             airplane?.Draw(bufferedGraphics.Graphics);
             userPoints?.Draw(bufferedGraphics.Graphics);
-            userPoints?.Draw(bufferedGraphics.Graphics);
             bufferedGraphics.Render();
         }
 
@@ -70,6 +69,25 @@ namespace MissileAtackImitator
             }
         }
 
+        private void SetAddAircraftPointsMode()
+        {
+            tsbtAddMissile.Checked = false;
+            pictureBox.MouseClick += PictureBox_MouseClick;
+        }
+
+        private void SetAddMissileMode()
+        {
+            tsbtAddAircraftPoints.Checked = false;
+            pictureBox.MouseClick -= PictureBox_MouseClick;
+        }
+
+        private void CancellModes()
+        {
+            tsbtAddAircraftPoints.Checked = false;
+            tsbtAddMissile.Checked = false;
+            pictureBox.MouseClick -= PictureBox_MouseClick;
+        }
+
         private void timer_Tick(object sender, System.EventArgs e)
         {
             if (airplane != null)
@@ -80,6 +98,8 @@ namespace MissileAtackImitator
 
         private void TsbtPlay_Click(object sender, System.EventArgs e)
         {
+            CancellModes();
+
             if (userPoints.Count < 2)
             {
                 MessageBox.Show(
@@ -113,6 +133,7 @@ namespace MissileAtackImitator
 
         private void TsbtClear_Click(object sender, System.EventArgs e)
         {
+            CancellModes();
             airplane = null;
             userPoints.Clear();
             pictureBox.Controls.Clear();
@@ -128,10 +149,25 @@ namespace MissileAtackImitator
             ReshapePictureBox();
         }
 
-        private void pictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void TsbtAddAircraftPoints_Click(object sender, System.EventArgs e)
+        {
+            SetAddAircraftPointsMode();
+        }
+
+        private void TsbtAddMissile_Click(object sender, System.EventArgs e)
+        {
+            SetAddMissileMode();
+        }
+
+        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             userPoints.Add(pictureBox, string.Empty, e.Location, userPointSize);
             Draw();
+        }
+
+        private void TsbtCancellModes_Click(object sender, System.EventArgs e)
+        {
+            CancellModes();
         }
     }
 }

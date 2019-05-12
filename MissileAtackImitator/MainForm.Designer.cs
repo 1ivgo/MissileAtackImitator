@@ -32,12 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbtPlay = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbtAddAircraftPoints = new System.Windows.Forms.ToolStripButton();
+            this.tsbtAddMissile = new System.Windows.Forms.ToolStripButton();
             this.tsbtClear = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtSettings = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.tsbtCancellModes = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel2.SuspendLayout();
@@ -50,7 +55,12 @@
             this.toolStrip.AutoSize = false;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtPlay,
+            this.toolStripSeparator1,
+            this.tsbtAddAircraftPoints,
+            this.tsbtAddMissile,
+            this.tsbtCancellModes,
             this.tsbtClear,
+            this.toolStripSeparator2,
             this.tsbtSettings});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -68,6 +78,33 @@
             this.tsbtPlay.ToolTipText = "Начать имитацию";
             this.tsbtPlay.Click += new System.EventHandler(this.TsbtPlay_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 50);
+            // 
+            // tsbtAddAircraftPoints
+            // 
+            this.tsbtAddAircraftPoints.AutoSize = false;
+            this.tsbtAddAircraftPoints.CheckOnClick = true;
+            this.tsbtAddAircraftPoints.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtAddAircraftPoints.Image = global::MissileAtackImitatorNS.Properties.Resources.PlaceMarker;
+            this.tsbtAddAircraftPoints.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtAddAircraftPoints.Name = "tsbtAddAircraftPoints";
+            this.tsbtAddAircraftPoints.Size = new System.Drawing.Size(47, 47);
+            this.tsbtAddAircraftPoints.Click += new System.EventHandler(this.TsbtAddAircraftPoints_Click);
+            // 
+            // tsbtAddMissile
+            // 
+            this.tsbtAddMissile.AutoSize = false;
+            this.tsbtAddMissile.CheckOnClick = true;
+            this.tsbtAddMissile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtAddMissile.Image = global::MissileAtackImitatorNS.Properties.Resources.Missile1;
+            this.tsbtAddMissile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtAddMissile.Name = "tsbtAddMissile";
+            this.tsbtAddMissile.Size = new System.Drawing.Size(47, 47);
+            this.tsbtAddMissile.Click += new System.EventHandler(this.TsbtAddMissile_Click);
+            // 
             // tsbtClear
             // 
             this.tsbtClear.AutoSize = false;
@@ -77,6 +114,11 @@
             this.tsbtClear.Name = "tsbtClear";
             this.tsbtClear.Size = new System.Drawing.Size(47, 47);
             this.tsbtClear.Click += new System.EventHandler(this.TsbtClear_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 50);
             // 
             // tsbtSettings
             // 
@@ -123,11 +165,20 @@
             this.pictureBox.Size = new System.Drawing.Size(583, 410);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            this.pictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDoubleClick);
             // 
             // timer
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // tsbtCancellModes
+            // 
+            this.tsbtCancellModes.AutoSize = false;
+            this.tsbtCancellModes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtCancellModes.Image = global::MissileAtackImitatorNS.Properties.Resources.Cancell;
+            this.tsbtCancellModes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtCancellModes.Name = "tsbtCancellModes";
+            this.tsbtCancellModes.Size = new System.Drawing.Size(47, 47);
+            this.tsbtCancellModes.Click += new System.EventHandler(this.TsbtCancellModes_Click);
             // 
             // MainForm
             // 
@@ -164,6 +215,11 @@
         private System.Windows.Forms.ToolStripButton tsbtClear;
         private System.Windows.Forms.ToolStripButton tsbtSettings;
         private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton tsbtAddAircraftPoints;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton tsbtAddMissile;
+        private System.Windows.Forms.ToolStripButton tsbtCancellModes;
     }
 }
 
