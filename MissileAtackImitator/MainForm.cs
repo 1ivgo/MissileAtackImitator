@@ -2,17 +2,19 @@
 using System.Windows.Forms;
 using MissileAtackImitatorCoreNS;
 using MissileAtackImitatorNS.Properties;
+using MissileAtackImitatorNS.View;
 
 namespace MissileAtackImitator
 {
     public partial class MainForm : Form
     {
         private Controller controller = null;
-        private ScenePoints userPoints = null;
         private Airplane airplane = null;
         private BufferedGraphicsContext bufferedGraphicsContext = null;
         private BufferedGraphics bufferedGraphics = null;
         private Graphics graphics = null;
+        private DraggablePoints userPoints = null;
+        private Size userPointSize = new Size(10, 10);
 
         public MainForm()
         {
@@ -20,13 +22,7 @@ namespace MissileAtackImitator
             controller = new Controller(this);
             timer.Start();
             timer.Interval = 25;
-            userPoints = new ScenePoints()
-            {
-                Size = new Size(5, 5),
-                Brush = Brushes.Red,
-                IsWithString = true
-            };
-
+            userPoints = new DraggablePoints();
             graphics = pictureBox.CreateGraphics();
             bufferedGraphicsContext = new BufferedGraphicsContext();
             bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
@@ -56,6 +52,7 @@ namespace MissileAtackImitator
         {
             bufferedGraphics.Graphics.Clear(Color.White);
             airplane?.Draw(bufferedGraphics.Graphics);
+            userPoints?.Draw(bufferedGraphics.Graphics);
             userPoints?.Draw(bufferedGraphics.Graphics);
             bufferedGraphics.Render();
         }
@@ -94,7 +91,7 @@ namespace MissileAtackImitator
                 return;
             }
 
-            ScenePoints airplanePoints = controller.GetTrajectory(userPoints);
+            ScenePoints airplanePoints = controller.GetTrajectory(userPoints.GetPoints());
 
             if (airplanePoints == null)
                 return;
@@ -118,6 +115,7 @@ namespace MissileAtackImitator
         {
             airplane = null;
             userPoints.Clear();
+            pictureBox.Controls.Clear();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -132,7 +130,7 @@ namespace MissileAtackImitator
 
         private void pictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            userPoints.Add(new Point(e.X, e.Y));
+            userPoints.Add(pictureBox, string.Empty, e.Location, userPointSize);
             Draw();
         }
     }

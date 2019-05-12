@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace MissileAtackImitatorCoreNS
 {
@@ -9,9 +11,9 @@ namespace MissileAtackImitatorCoreNS
         public int StepsCount { get; set; }
 
         [DataMember(Order = 1)]
-        public ScenePoints AircraftPoints { get; set; }
+        public List<Point> AircraftPoints { get; set; }
 
-        public ImitationRequest(int stepsCount, ScenePoints aircraftPoints)
+        public ImitationRequest(int stepsCount, List<Point> aircraftPoints)
         {
             StepsCount = stepsCount;
             AircraftPoints = aircraftPoints;

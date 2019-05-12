@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using MissileAtackImitatorCoreNS;
 using MissileAtackImitatorNS.Properties;
@@ -16,7 +18,7 @@ namespace MissileAtackImitator
             this.mainForm = mainForm;
         }
 
-        internal ScenePoints GetTrajectory(ScenePoints userPoints)
+        internal ScenePoints GetTrajectory(List<Point> userPoints)
         {
             var requestFilename = "ImitationRequest.json";
             var responseFilename = "ImitationResponse.json";
