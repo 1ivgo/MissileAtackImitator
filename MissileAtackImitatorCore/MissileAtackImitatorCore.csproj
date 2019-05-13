@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SceneObjects\Airplane.cs" />
+    <Compile Include="SceneObjects\FlyingSceneObject.cs" />
     <Compile Include="ImitationRequest.cs" />
     <Compile Include="ImitationResponse.cs" />
     <Compile Include="JsonSaverLoader.cs" />
@@ -51,7 +51,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SceneObjects\IDrawer.cs" />
+    <Compile Include="SceneObjects\IDrawable.cs" />
     <Compile Include="SceneObjects\ScenePoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,7 +62,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FighterJet.png" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

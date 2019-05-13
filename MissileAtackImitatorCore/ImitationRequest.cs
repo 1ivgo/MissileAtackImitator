@@ -5,23 +5,22 @@ using System.Runtime.Serialization;
 namespace MissileAtackImitatorCoreNS
 {
     [DataContract]
-    public class ImitationRequest
+    public struct ImitationRequest
     {
-        [DataMember(Order = 0)]
-        public int StepsCount { get; set; }
+        [DataMember]
+        public int StepsCount;
 
-        [DataMember(Order = 1)]
-        public List<Point> AircraftPoints { get; set; }
+        [DataMember]
+        public List<Point> AircraftPoints;
 
-        public ImitationRequest(int stepsCount, List<Point> aircraftPoints)
+        [DataMember]
+        public MissileInfo Missile;
+
+        public struct MissileInfo
         {
-            StepsCount = stepsCount;
-            AircraftPoints = aircraftPoints;
-        }
-
-        public void DoRequest(string filePath)
-        {
-            JsonSaverLoader.Save(this, filePath);
+            public Point LaunchPoint;
+            public Point Direction;
+            public double VelocityModule;
         }
     }
 }

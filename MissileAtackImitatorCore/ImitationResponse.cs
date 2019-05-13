@@ -1,20 +1,16 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.Serialization;
 
 namespace MissileAtackImitatorCoreNS
 {
     [DataContract]
-    public class ImitationResponse
+    public struct ImitationResponse
     {
-        [DataMember(Order = 0)]
-        public ScenePoints AircraftTrajectory { get; private set; }
+        [DataMember]
+        public List<PointF> AircraftTrajectory;
 
-        public ScenePoints GetResponse(string filename)
-        {
-            var response = JsonSaverLoader.Load<ImitationResponse>(filename);
-            AircraftTrajectory = response.AircraftTrajectory;
-            File.Delete(filename);
-            return AircraftTrajectory;
-        }
+        [DataMember]
+        public List<PointF> MissileTrajectory;
     }
 }

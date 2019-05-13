@@ -1,31 +1,37 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
-using MissileAtackImitatorCoreNS;
+using MissileAtackImitatorCoreNS.SceneObjects;
 using MissileAtackImitatorNS.Properties;
 using MissileAtackImitatorNS.View;
+using KRUReaderNS.UserControls;
+using MissileAtackImitatorCoreNS;
 
 namespace MissileAtackImitator
 {
     public partial class MainForm : Form
     {
         private Controller controller = null;
-        private Airplane airplane = null;
         private BufferedGraphicsContext bufferedGraphicsContext = null;
         private BufferedGraphics bufferedGraphics = null;
         private Graphics graphics = null;
-        private DraggablePoints userPoints = null;
-        private Size userPointSize = new Size(10, 10);
+        private DraggablePoints aircraftPoints = null;
+        private MissileDraggablePoints missilePoints = null;
+        private Size scenePointsSize = new Size(10, 10);
+        private List<IDrawable> sceneObjects;
+        private ImitationRequest imitationRequest;
 
         public MainForm()
         {
             InitializeComponent();
             controller = new Controller(this);
-            timer.Start();
             timer.Interval = 25;
-            userPoints = new DraggablePoints();
             graphics = pictureBox.CreateGraphics();
             bufferedGraphicsContext = new BufferedGraphicsContext();
-            bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
+            bufferedGraphics = bufferedGraphicsContext.Allocate(
+                graphics,
+                new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
+            sceneObjects = new List<IDrawable>();
         }
 
         internal string ShowOpenFileDialog(string filter, string title)
@@ -51,8 +57,15 @@ namespace MissileAtackImitator
         private void Draw()
         {
             bufferedGraphics.Graphics.Clear(Color.White);
-            airplane?.Draw(bufferedGraphics.Graphics);
-            userPoints?.Draw(bufferedGraphics.Graphics);
+
+            if (sceneObjects == null)
+                return;
+
+            foreach (var sceneObject in sceneObjects)
+            {
+                sceneObject.Draw(bufferedGraphics.Graphics);
+            }
+
             bufferedGraphics.Render();
         }
 
@@ -65,42 +78,58 @@ namespace MissileAtackImitator
             {
                 pictureBox.Width = newWidth;
                 pictureBox.Height = newHeight;
-                bufferedGraphics = bufferedGraphicsContext.Allocate(graphics, new Rectangle(0, 0, newWidth, newHeight));
+                bufferedGraphics = bufferedGraphicsContext.Allocate(
+                    graphics,
+                    new Rectangle(0, 0, newWidth, newHeight));
             }
         }
 
         private void SetAddAircraftPointsMode()
         {
+            aircraftPoints = new DraggablePoints(Color.Red);
+            sceneObjects.Add(aircraftPoints);
             tsbtAddMissile.Checked = false;
-            pictureBox.MouseClick += PictureBox_MouseClick;
+            pictureBox.MouseClick += PictureBox_AircraftMouseClick;
+            pictureBox.MouseClick -= PictureBox_MissileMouseClick;
         }
 
         private void SetAddMissileMode()
         {
+            missilePoints = new MissileDraggablePoints(Color.Black);
+            sceneObjects.Add(missilePoints);
             tsbtAddAircraftPoints.Checked = false;
-            pictureBox.MouseClick -= PictureBox_MouseClick;
+            pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
+            pictureBox.MouseClick += PictureBox_MissileMouseClick;
         }
 
         private void CancellModes()
         {
             tsbtAddAircraftPoints.Checked = false;
             tsbtAddMissile.Checked = false;
-            pictureBox.MouseClick -= PictureBox_MouseClick;
+            pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
+            pictureBox.MouseClick -= PictureBox_MissileMouseClick;
+        }
+
+        private void Clear()
+        {
+            pictureBox.Controls.Clear();
+            sceneObjects.Clear();
+            bufferedGraphics.Graphics.Clear(Color.White);
+            bufferedGraphics.Render();
         }
 
         private void timer_Tick(object sender, System.EventArgs e)
         {
-            if (airplane != null)
-                airplane.Index++;
-
+            controller.Update();
             Draw();
         }
 
         private void TsbtPlay_Click(object sender, System.EventArgs e)
         {
             CancellModes();
+            controller.Clear(sceneObjects);
 
-            if (userPoints.Count < 2)
+            if (aircraftPoints.Count < 2)
             {
                 MessageBox.Show(
                     "Точек должно быть больше двух",
@@ -111,19 +140,15 @@ namespace MissileAtackImitator
                 return;
             }
 
-            ScenePoints airplanePoints = controller.GetTrajectory(userPoints.GetPoints());
+            imitationRequest.AircraftPoints = aircraftPoints.GetPoints();
+            imitationRequest.Missile.LaunchPoint = missilePoints.GetPoints()[0];
+            imitationRequest.Missile.Direction = missilePoints.GetPoints()[1];
+            imitationRequest.StepsCount = 500;
 
-            if (airplanePoints == null)
-                return;
-
-            airplanePoints.Size = new Size(1, 1);
-            airplanePoints.Brush = Brushes.Black;
-            airplanePoints.IsWithString = false;
-
-            airplane = new Airplane(airplanePoints);
-            airplane.Index = 0;
+            controller.DoRequest(sceneObjects, imitationRequest);
 
             Draw();
+            timer.Start();
         }
 
         private void TsBtSettings_Click(object sender, System.EventArgs e)
@@ -134,9 +159,8 @@ namespace MissileAtackImitator
         private void TsbtClear_Click(object sender, System.EventArgs e)
         {
             CancellModes();
-            airplane = null;
-            userPoints.Clear();
-            pictureBox.Controls.Clear();
+            Clear();
+            controller.Clear(sceneObjects);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -159,10 +183,27 @@ namespace MissileAtackImitator
             SetAddMissileMode();
         }
 
-        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox_AircraftMouseClick(object sender, MouseEventArgs e)
         {
-            userPoints.Add(pictureBox, string.Empty, e.Location, userPointSize);
-            Draw();
+            if (e.Button == MouseButtons.Left)
+            {
+                aircraftPoints.Add(pictureBox, string.Empty, e.Location, scenePointsSize);
+                Draw();
+            }
+        }
+
+        private void PictureBox_MissileMouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                missilePoints.Add(pictureBox, string.Empty, e.Location, scenePointsSize);
+                if (missilePoints.Count == 2)
+                {
+                    double velocityModule = VelocityDialog.Show();
+                    imitationRequest.Missile.VelocityModule = velocityModule;
+                    CancellModes();
+                }
+            }
         }
 
         private void TsbtCancellModes_Click(object sender, System.EventArgs e)
