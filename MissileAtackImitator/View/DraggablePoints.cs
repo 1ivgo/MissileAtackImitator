@@ -7,7 +7,14 @@ namespace MissileAtackImitatorNS.View
 {
     class DraggablePoints : List<DraggablePoint>, IDrawable
     {
-        internal void Add(
+        private Color color;
+
+        public DraggablePoints(Color color) : base()
+        {
+            this.color = color;
+        }
+
+        internal virtual void Add(
             Control parent,
             string text,
             Point location,
@@ -15,17 +22,17 @@ namespace MissileAtackImitatorNS.View
 
         {
             var draggablePoint = new DraggablePoint(
+                color,
                 Count,
                 parent,
                 text,
                 location,
-                size.Width,
-                size.Height);
+                size);
 
             Add(draggablePoint);
         }
 
-        public void Draw(Graphics graphics)
+        public virtual void Draw(Graphics graphics)
         {
             foreach (var point in this)
             {

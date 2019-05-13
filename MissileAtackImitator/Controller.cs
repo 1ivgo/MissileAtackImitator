@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Resources;
 using MissileAtackImitatorCoreNS;
 using MissileAtackImitatorCoreNS.SceneObjects;
 using MissileAtackImitatorNS.Properties;
@@ -22,10 +21,7 @@ namespace MissileAtackImitator
             this.mainForm = mainForm;
         }
 
-        internal void DoRequest(
-            List<Point> aircraftPoints,
-            List<Point> missilePoints,
-            List<IDrawable> sceneObjects)
+        internal void DoRequest(List<IDrawable> sceneObjects, ImitationRequest imitationRequest)
         {
             var requestFilename = "ImitationRequest.json";
             var responseFilename = "ImitationResponse.json";
@@ -34,7 +30,7 @@ namespace MissileAtackImitator
             if (pythonScriptFilename == string.Empty)
                 pythonScriptFilename = ChangePythonScriptFilename();
 
-            new ImitationRequest(500, aircraftPoints).DoRequest(requestFilename);
+            JsonSaverLoader.Save(imitationRequest, requestFilename);
 
             var processInfoStart = new ProcessStartInfo()
             {
@@ -68,15 +64,21 @@ namespace MissileAtackImitator
 
             File.Delete(requestFilename);
 
-            var response = new ImitationResponse();
-            response.GetResponse(responseFilename);
-            ScenePoints aircraftTrajectory = response.AircraftTrajectory;
-            var aircraftBitmap = new Bitmap(Resources.FighterJet);
-            aircraft = new FlyingSceneObject(aircraftTrajectory, aircraftBitmap);
-            ScenePoints missileTrajectory = response.MissileTrajectory;
-            var missileBitmap = new Bitmap(Resources.Missile1);
-            missile = new FlyingSceneObject(missileTrajectory, missileBitmap);
+            var response = JsonSaverLoader.Load<ImitationResponse>(responseFilename);
+
+
+            var pointSize = new Size(2, 2);
+
+            List<PointF> aircraftTrajectory = response.AircraftTrajectory;
+            var aircraftBitmap = new Bitmap(Resources.FighterJet, 25, 25);
+            var aircraftScenePoints = new ScenePoints(aircraftTrajectory, pointSize, Brushes.Black);
+            aircraft = new FlyingSceneObject(aircraftBitmap, aircraftScenePoints);
             sceneObjects.Add(aircraft);
+
+            List<PointF> missileTrajectory = response.MissileTrajectory;
+            var missileBitmap = new Bitmap(Resources.Missile1, 10, 10);
+            var missileScenePoints = new ScenePoints(missileTrajectory, pointSize, Brushes.Red);
+            missile = new FlyingSceneObject(missileBitmap, missileScenePoints);
             sceneObjects.Add(missile);
         }
 
@@ -97,11 +99,17 @@ namespace MissileAtackImitator
         {
             if (aircraft != null)
                 aircraft.Index++;
+
+            if (aircraft != null)
+                missile.Index++;
         }
 
-        internal void Clear()
+        internal void Clear(List<IDrawable> sceneObjects)
         {
+            sceneObjects.Remove(aircraft);
             aircraft = null;
+            sceneObjects.Remove(missile);
+            missile = null;
         }
     }
 }

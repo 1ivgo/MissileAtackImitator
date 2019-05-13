@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using MissileAtackImitatorCoreNS.SceneObjects;
 using MissileAtackImitatorNS.Properties;
 using MissileAtackImitatorNS.View;
+using KRUReaderNS.UserControls;
+using MissileAtackImitatorCoreNS;
 
 namespace MissileAtackImitator
 {
@@ -14,15 +16,15 @@ namespace MissileAtackImitator
         private BufferedGraphics bufferedGraphics = null;
         private Graphics graphics = null;
         private DraggablePoints aircraftPoints = null;
-        private DraggablePoints missilePoints = null;
+        private MissileDraggablePoints missilePoints = null;
         private Size scenePointsSize = new Size(10, 10);
         private List<IDrawable> sceneObjects;
+        private ImitationRequest imitationRequest;
 
         public MainForm()
         {
             InitializeComponent();
             controller = new Controller(this);
-            timer.Start();
             timer.Interval = 25;
             graphics = pictureBox.CreateGraphics();
             bufferedGraphicsContext = new BufferedGraphicsContext();
@@ -84,7 +86,7 @@ namespace MissileAtackImitator
 
         private void SetAddAircraftPointsMode()
         {
-            aircraftPoints = new DraggablePoints();
+            aircraftPoints = new DraggablePoints(Color.Red);
             sceneObjects.Add(aircraftPoints);
             tsbtAddMissile.Checked = false;
             pictureBox.MouseClick += PictureBox_AircraftMouseClick;
@@ -93,7 +95,7 @@ namespace MissileAtackImitator
 
         private void SetAddMissileMode()
         {
-            missilePoints = new DraggablePoints();
+            missilePoints = new MissileDraggablePoints(Color.Black);
             sceneObjects.Add(missilePoints);
             tsbtAddAircraftPoints.Checked = false;
             pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
@@ -108,6 +110,14 @@ namespace MissileAtackImitator
             pictureBox.MouseClick -= PictureBox_MissileMouseClick;
         }
 
+        private void Clear()
+        {
+            pictureBox.Controls.Clear();
+            sceneObjects.Clear();
+            bufferedGraphics.Graphics.Clear(Color.White);
+            bufferedGraphics.Render();
+        }
+
         private void timer_Tick(object sender, System.EventArgs e)
         {
             controller.Update();
@@ -117,6 +127,7 @@ namespace MissileAtackImitator
         private void TsbtPlay_Click(object sender, System.EventArgs e)
         {
             CancellModes();
+            controller.Clear(sceneObjects);
 
             if (aircraftPoints.Count < 2)
             {
@@ -129,12 +140,15 @@ namespace MissileAtackImitator
                 return;
             }
 
-            controller.DoRequest(
-                aircraftPoints.GetPoints(),
-                missilePoints.GetPoints(),
-                sceneObjects);
+            imitationRequest.AircraftPoints = aircraftPoints.GetPoints();
+            imitationRequest.Missile.LaunchPoint = missilePoints.GetPoints()[0];
+            imitationRequest.Missile.Direction = missilePoints.GetPoints()[1];
+            imitationRequest.StepsCount = 500;
+
+            controller.DoRequest(sceneObjects, imitationRequest);
 
             Draw();
+            timer.Start();
         }
 
         private void TsBtSettings_Click(object sender, System.EventArgs e)
@@ -145,9 +159,8 @@ namespace MissileAtackImitator
         private void TsbtClear_Click(object sender, System.EventArgs e)
         {
             CancellModes();
-            controller.Clear();
-            pictureBox.Controls.Clear();
-            sceneObjects.Clear();
+            Clear();
+            controller.Clear(sceneObjects);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -184,6 +197,12 @@ namespace MissileAtackImitator
             if (e.Button == MouseButtons.Left)
             {
                 missilePoints.Add(pictureBox, string.Empty, e.Location, scenePointsSize);
+                if (missilePoints.Count == 2)
+                {
+                    double velocityModule = VelocityDialog.Show();
+                    imitationRequest.Missile.VelocityModule = velocityModule;
+                    CancellModes();
+                }
             }
         }
 

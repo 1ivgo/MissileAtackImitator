@@ -1,19 +1,18 @@
 ﻿using System.Drawing;
-using MissileAtackImitatorCoreNS.Properties;
 using MissileAtackImitatorCoreNS.SceneObjects;
 
 namespace MissileAtackImitatorCoreNS
 {
     public class FlyingSceneObject : IDrawable
     {
-        private Bitmap bitmap;
         private ScenePoints points;
         private int index = 0;
+        private Bitmap bitmap;
 
-        public FlyingSceneObject(ScenePoints points, Bitmap bitmap)
+        public FlyingSceneObject(Bitmap bitmap, ScenePoints points)
         {
-            this.points = points;
             this.bitmap = bitmap;
+            this.points = points;
         }
 
         public int Index

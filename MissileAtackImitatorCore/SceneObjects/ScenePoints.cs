@@ -4,18 +4,23 @@ using MissileAtackImitatorCoreNS.SceneObjects;
 
 namespace MissileAtackImitatorCoreNS
 {
-    public class ScenePoints : List<PointF>, IDrawable
+    public class ScenePoints : List<RectangleF>, IDrawable
     {
-        public Size Size { get; set; } = new Size(1, 1);
+        private Brush brush = null;
 
-        public Brush Brush { get; set; } = Brushes.Black;
+        public ScenePoints(List<PointF> points, Size size, Brush brush)
+        {
+            this.brush = brush;
+
+            foreach (var point in points)
+            {
+                Add(new RectangleF(point, size));
+            }
+        }
 
         public void Draw(Graphics gr)
         {
-            for (int i = 0; i < Count; i++)
-            {
-                gr.FillRectangle(Brush, new RectangleF(this[i], Size));
-            }
+            gr.FillRectangles(brush, this.ToArray());
         }
     }
 }

@@ -15,26 +15,26 @@ namespace MissileAtackImitatorNS.View
         private Point stringLocation = Point.Empty;
 
         public DraggablePoint(
+            Color color,
             int index,
             Control parent,
             string text,
             Point location,
-            int width,
-            int height)
+            Size size)
             : base(
                   parent,
                   text,
                   location.X,
                   location.Y,
-                  width,
-                  height)
+                  size.Width,
+                  size.Height)
         {
             this.index = index;
-            BackColor = Color.Red;
+            BackColor = color;
             stringLocation = new Point(Location.X, Location.Y + Size.Height);
         }
 
-        public void Draw(Graphics graphics)
+        public virtual void Draw(Graphics graphics)
         {
             graphics.DrawString(index.ToString(), font, brush, stringLocation);
         }
