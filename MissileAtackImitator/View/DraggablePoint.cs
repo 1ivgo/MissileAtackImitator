@@ -1,10 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using MissileAtackImitatorCoreNS.SceneObjects;
 
 namespace MissileAtackImitatorNS.View
 {
-    class DraggablePoint : Control
+    class DraggablePoint : Control, IDrawable
     {
         private bool isDisposed = false;
         private bool isDragging = false;
@@ -34,7 +34,7 @@ namespace MissileAtackImitatorNS.View
             stringLocation = new Point(Location.X, Location.Y + Size.Height);
         }
 
-        internal void Draw(Graphics graphics)
+        public void Draw(Graphics graphics)
         {
             graphics.DrawString(index.ToString(), font, brush, stringLocation);
         }

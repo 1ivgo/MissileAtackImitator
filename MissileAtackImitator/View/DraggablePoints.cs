@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using MissileAtackImitatorCoreNS.SceneObjects;
 
 namespace MissileAtackImitatorNS.View
 {
-    class DraggablePoints : List<DraggablePoint>
+    class DraggablePoints : List<DraggablePoint>, IDrawable
     {
         internal void Add(
             Control parent,
@@ -24,7 +25,7 @@ namespace MissileAtackImitatorNS.View
             Add(draggablePoint);
         }
 
-        internal void Draw(Graphics graphics)
+        public void Draw(Graphics graphics)
         {
             foreach (var point in this)
             {

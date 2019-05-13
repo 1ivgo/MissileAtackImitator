@@ -99,9 +99,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\FighterJet.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Settings.png" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cancell.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FighterJet.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

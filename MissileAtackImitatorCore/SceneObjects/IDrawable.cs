@@ -2,7 +2,7 @@
 
 namespace MissileAtackImitatorCoreNS.SceneObjects
 {
-    public interface IDrawer
+    public interface IDrawable
     {
         void Draw(Graphics graphics);
     }
