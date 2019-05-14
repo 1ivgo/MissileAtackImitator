@@ -64,8 +64,9 @@ def npPointsToCurves(curvesBasisPoints, maxPerCurvePointsCount):
 def unitVector(v):
     return v / linalg.norm(v)
 
-def angle(v1, v2):
-    return np.arccos(np.dot(unitVector(v1), unitVector(v2))) 
+def angle(v):
+    sign = np.sign(v[1]) if v[1] != 0 else 1
+    return np.arccos(unitVector(v)[0]) * sign
 
 def rotate(v, angle):
     cos = np.cos(angle)
@@ -83,11 +84,14 @@ def calcProportionalMissile(aircraftPoints, missilePoints, k, stepsCount):
     currentSightLine = aircraftPoints[:, 0] - missilePoints[:, -2]
     nextSightLine    = aircraftPoints[:, 1] - missilePoints[:, -1]
 
-    sightAngleDelta = angle(nextSightLine, missileVelocity) \
-                      - angle(currentSightLine, missileVelocity)
+    nextSightLineAngle = angle(nextSightLine)
+    sightAngleDelta = nextSightLineAngle \
+                      - angle(currentSightLine)
 
     angleLimit = np.pi / 36
-    rotationAngle = np.clip(sightAngleDelta * k, -angleLimit, angleLimit)
+    rotationSign = np.sign(nextSightLineAngle - angle(missileVelocity))
+    rotationAngle = np.clip(abs(sightAngleDelta) * k * rotationSign, -angleLimit, angleLimit)
+   
     nextMissileVelocity = rotate(missileVelocity, rotationAngle)
     nextPoint = missilePoints[:, -1] + nextMissileVelocity
 

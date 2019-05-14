@@ -4,10 +4,10 @@ using System.Windows.Forms;
 using MissileAtackImitatorCoreNS.SceneObjects;
 using MissileAtackImitatorNS.Properties;
 using MissileAtackImitatorNS.View;
-using KRUReaderNS.UserControls;
 using MissileAtackImitatorCoreNS;
+using MissileAtackImitatorNS.View.Forms;
 
-namespace MissileAtackImitator
+namespace MissileAtackImitator.View.Forms
 {
     public partial class MainForm : Form
     {
@@ -118,6 +118,28 @@ namespace MissileAtackImitator
             bufferedGraphics.Render();
         }
 
+        private void CreateRequest()
+        {
+            imitationRequest.AircraftPoints = aircraftPoints.GetPoints();
+            imitationRequest.Missile.LaunchPoint = missilePoints.GetPoints()[0];
+            imitationRequest.Missile.Direction = missilePoints.GetPoints()[1];
+
+            int missileVelocityModule = Settings.Default.MissileVelocityModule;
+            if (missileVelocityModule == 0)
+            {
+
+            }
+
+            int stepsCount = Settings.Default.StepsCount;
+            if (stepsCount == 0)
+            {
+
+            }
+
+            imitationRequest.StepsCount = stepsCount;
+            imitationRequest.Missile.VelocityModule = missileVelocityModule;
+        }
+
         private void timer_Tick(object sender, System.EventArgs e)
         {
             controller.Update();
@@ -153,7 +175,10 @@ namespace MissileAtackImitator
 
         private void TsBtSettings_Click(object sender, System.EventArgs e)
         {
-            controller.ChangePythonScriptFilename();
+            var settingsForm = new SettingsForm();
+            settingsForm.Build();
+            settingsForm.ShowDialog();
+            //controller.ChangePythonScriptFilename();
         }
 
         private void TsbtClear_Click(object sender, System.EventArgs e)
@@ -199,7 +224,7 @@ namespace MissileAtackImitator
                 missilePoints.Add(pictureBox, string.Empty, e.Location, scenePointsSize);
                 if (missilePoints.Count == 2)
                 {
-                    double velocityModule = VelocityDialog.Show();
+                    double velocityModule = GetValueDialog.Show("Скорость ракеты");
                     imitationRequest.Missile.VelocityModule = velocityModule;
                     CancellModes();
                 }

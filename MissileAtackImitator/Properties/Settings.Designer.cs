@@ -34,5 +34,29 @@ namespace MissileAtackImitatorNS.Properties {
                 this["PythonScriptFilename"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int StepsCount {
+            get {
+                return ((int)(this["StepsCount"]));
+            }
+            set {
+                this["StepsCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MissileVelocityModule {
+            get {
+                return ((int)(this["MissileVelocityModule"]));
+            }
+            set {
+                this["MissileVelocityModule"] = value;
+            }
+        }
     }
 }
