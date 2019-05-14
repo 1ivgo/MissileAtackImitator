@@ -12,22 +12,17 @@ from bezier import Curve
 import numpy as np
 from numpy import linalg
 
-
 def calculateImitation(requestFileName, responseFileName):
     requestFile = open(requestFileName)
     request = json.load(requestFile)
     
+    stepsCount = request['StepsCount']
+
     curvesBasisPoints = np.hstack(tuple(map(requestPointToNPPoint, request['AircraftPoints'])))
 
-
-    curves = npPointsToCurves(curvesBasisPoints, 3)
-
-    evaluate = lambda curve: \
-        curve.evaluate_multi(np.linspace(0.0, 1.0, request['StepsCount'] // len(curves)))
-   
-    t = np.hstack(tuple(map(evaluate, curves)))
+    at = calculateAircraftTrajectory(curvesBasisPoints, stepsCount)
     response = {'AircraftTrajectory' : list(map(npPointToResponsePoint, 
-                                                np.hsplit(t, np.shape(t)[1])))}
+                                                np.hsplit(at, np.shape(at)[1])))}
     
     missile = request['Missile']
     launchPoint = requestPointToNPPoint(missile['LaunchPoint'])
@@ -35,15 +30,22 @@ def calculateImitation(requestFileName, responseFileName):
     velocity = unitVector(direction) * missile['VelocityModule']
     missilePoints = np.hstack((launchPoint, launchPoint + velocity))
 
-    mt = calcProportionalMissile(t, missilePoints, 1.2, request['StepsCount'] - 3)
+    mt = calcProportionalMissile(at, missilePoints, 20, request['StepsCount'])
     
-
-    #import pdb; pdb.set_trace()
     response['MissileTrajectory'] = list(map(npPointToResponsePoint, 
                                                 np.hsplit(mt, np.shape(mt)[1])))
 
     json.dump(response, open(responseFileName, 'w'))
     return 
+
+def calculateAircraftTrajectory(curvesBasisPoints, stepsCount):
+    curves = npPointsToCurves(curvesBasisPoints, 3)
+
+    evaluate = lambda curve: \
+        curve.evaluate_multi(np.linspace(0.0, 1.0, stepsCount // len(curves)))
+
+    t = np.hstack(tuple(map(evaluate, curves)))
+    return t
 
 def requestPointToNPPoint(p):
     return np.array([[p['x']],[p['y']]], np.float64)
@@ -61,12 +63,14 @@ def npPointsToCurves(curvesBasisPoints, maxPerCurvePointsCount):
     
     return result
 
+def angle(v):
+    return np.arctan2(v[1], v[0])
+
 def unitVector(v):
     return v / linalg.norm(v)
 
-def angle(v):
-    sign = np.sign(v[1]) if v[1] != 0 else 1
-    return np.arccos(unitVector(v)[0]) * sign
+def orthogonalVector(v):
+    return np.array([-v[1], v[0]])
 
 def rotate(v, angle):
     cos = np.cos(angle)
@@ -78,21 +82,25 @@ def rotate(v, angle):
 def calcProportionalMissile(aircraftPoints, missilePoints, k, stepsCount):
     if np.shape(aircraftPoints)[1] < 2  or stepsCount < 0:
         return missilePoints
-
+    
     missileVelocity = missilePoints[:, -1] - missilePoints[:, -2]
    
     currentSightLine = aircraftPoints[:, 0] - missilePoints[:, -2]
     nextSightLine    = aircraftPoints[:, 1] - missilePoints[:, -1]
+    
+    currentDistance = np.linalg.norm(currentSightLine)
 
-    nextSightLineAngle = angle(nextSightLine)
-    sightAngleDelta = nextSightLineAngle \
+    if currentDistance <= 5:
+        return missilePoints
+
+    sightAngleDelta = angle(nextSightLine) \
                       - angle(currentSightLine)
+    approachVelocity = abs(np.linalg.norm(nextSightLine) - currentDistance)
 
     angleLimit = np.pi / 36
-    rotationSign = np.sign(nextSightLineAngle - angle(missileVelocity))
-    rotationAngle = np.clip(abs(sightAngleDelta) * k * rotationSign, -angleLimit, angleLimit)
-   
+    rotationAngle =  np.clip(k * approachVelocity * sightAngleDelta, -angleLimit, angleLimit)  
     nextMissileVelocity = rotate(missileVelocity, rotationAngle)
+   
     nextPoint = missilePoints[:, -1] + nextMissileVelocity
 
     missilePoints = np.hstack((missilePoints, np.reshape(nextPoint, (2, 1)))) 
