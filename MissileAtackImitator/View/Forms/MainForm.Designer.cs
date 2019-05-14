@@ -1,4 +1,4 @@
-﻿namespace MissileAtackImitator
+﻿namespace MissileAtackImitator.View.Forms
 {
     partial class MainForm
     {

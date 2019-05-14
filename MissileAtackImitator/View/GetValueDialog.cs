@@ -1,13 +1,11 @@
 ﻿using MissileAtackImitatorNS.Properties;
 using System.Windows.Forms;
 
-namespace KRUReaderNS.UserControls
+namespace MissileAtackImitatorNS.View
 {
-    public static class VelocityDialog
+    public static class GetValueDialog
     {
-        public const string title = "Скорость ракеты";
-
-        public static double Show()
+        public static double Show(string title)
         {
             double result = 0;
 
@@ -52,21 +50,21 @@ namespace KRUReaderNS.UserControls
             };
             btOk.Click += (sender, e) =>
             {
-                Validate(form, tb, ref result);
+                ValidateDouble(form, tb, ref result);
             };
             tlp.Controls.Add(btOk);
 
             form.KeyDown += (sender, e) =>
             {
                 if (e.KeyCode == Keys.Enter)
-                    Validate(form, tb, ref result);
+                    ValidateDouble(form, tb, ref result);
             };
 
             form.ShowDialog();
             return result;
         }
 
-        private static void Validate(Form form, TextBox tb, ref double result)
+        private static void ValidateDouble(Form form, TextBox tb, ref double result)
         {
             bool parseResult = double.TryParse(tb.Text, out result);
 
