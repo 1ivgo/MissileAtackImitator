@@ -1,27 +1,34 @@
 ﻿using System.Windows.Forms;
 using MissileAtackImitatorNS.Properties;
+using MissileAtackImitator;
 
 namespace MissileAtackImitatorNS.View.Forms
 {
-    public partial class SettingsForm : Form
+    internal partial class SettingsForm : Form
     {
         private const string noData = "Нет данных";
+        private Controller controller = null;
 
-        public SettingsForm()
+        public SettingsForm(Controller controller)
         {
             InitializeComponent();
+            this.controller = controller;
         }
 
         internal void Build()
         {
-            string pythonSriptFilename = Settings.Default.PythonScriptFilename;
+            string pythonScriptFilename = Settings.Default.PythonScriptFilename;
             int stepsCont = Settings.Default.StepsCount;
             int missileVelocityModule = Settings.Default.MissileVelocityModule;
 
-            if (pythonSriptFilename == string.Empty)
+            if (pythonScriptFilename == string.Empty)
                 lbPythonScriptFilename.Text = noData;
             else
-                lbPythonScriptFilename.Text = pythonSriptFilename;
+            {
+                int dividerIndex = pythonScriptFilename.Length / 2;
+                pythonScriptFilename = pythonScriptFilename.Insert(dividerIndex, "\r\n");
+                lbPythonScriptFilename.Text = pythonScriptFilename;
+            }
 
             nudPointsCount.Value = stepsCont;
             nudMissileVelocity.Value = missileVelocityModule;
@@ -30,6 +37,7 @@ namespace MissileAtackImitatorNS.View.Forms
         private void btApply_Click(object sender, System.EventArgs e)
         {
             string pythonScriptFilename = lbPythonScriptFilename.Text;
+            pythonScriptFilename = pythonScriptFilename.Replace("\r\n", string.Empty);
             int stepsCount = (int)nudPointsCount.Value;
             int velocityModule = (int)nudMissileVelocity.Value;
 
@@ -38,6 +46,14 @@ namespace MissileAtackImitatorNS.View.Forms
             Settings.Default.MissileVelocityModule = velocityModule;
 
             Close();
+        }
+
+        private void btChangePythonScriptFilename_Click(object sender, System.EventArgs e)
+        {
+            string pythonScriptFilename = controller.ChangePythonScriptFilename();
+            int dividerIndex = pythonScriptFilename.Length / 2;
+            pythonScriptFilename = pythonScriptFilename.Insert(dividerIndex, "\r\n");
+            lbPythonScriptFilename.Text = pythonScriptFilename;
         }
     }
 }

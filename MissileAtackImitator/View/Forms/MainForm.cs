@@ -26,6 +26,7 @@ namespace MissileAtackImitator.View.Forms
             InitializeComponent();
             controller = new Controller(this);
             timer.Interval = 25;
+            timer.Start();
             graphics = pictureBox.CreateGraphics();
             bufferedGraphicsContext = new BufferedGraphicsContext();
             bufferedGraphics = bufferedGraphicsContext.Allocate(
@@ -170,12 +171,11 @@ namespace MissileAtackImitator.View.Forms
             controller.DoRequest(sceneObjects, imitationRequest);
 
             Draw();
-            timer.Start();
         }
 
         private void TsBtSettings_Click(object sender, System.EventArgs e)
         {
-            var settingsForm = new SettingsForm();
+            var settingsForm = new SettingsForm(controller);
             settingsForm.Build();
             settingsForm.ShowDialog();
             //controller.ChangePythonScriptFilename();
@@ -222,9 +222,9 @@ namespace MissileAtackImitator.View.Forms
             if (e.Button == MouseButtons.Left)
             {
                 missilePoints.Add(pictureBox, string.Empty, e.Location, scenePointsSize);
-                if (missilePoints.Count == 2)
+                if (missilePoints.Count == 2 && imitationRequest.Missile.VelocityModule == 0)
                 {
-                    double velocityModule = GetValueDialog.Show("Скорость ракеты");
+                    double velocityModule = GetValueDialog<double>.Show(this, "Скорость ракеты");
                     imitationRequest.Missile.VelocityModule = velocityModule;
                     CancellModes();
                 }

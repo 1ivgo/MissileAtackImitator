@@ -31,9 +31,13 @@ def calculateImitation(requestFileName, responseFileName):
     missilePoints = np.hstack((launchPoint, launchPoint + velocity))
 
     mt = calcProportionalMissile(at, missilePoints, 20, request['StepsCount'])
+    fuzzyMt = calcProportionalMissile(at, missilePoints, 1, request['StepsCount'])
     
     response['MissileTrajectory'] = list(map(npPointToResponsePoint, 
                                                 np.hsplit(mt, np.shape(mt)[1])))
+
+    response['FuzzyMissileTrajectory'] = list(map(npPointToResponsePoint, 
+                                                np.hsplit(fuzzyMt, np.shape(fuzzyMt)[1])))                                           
 
     json.dump(response, open(responseFileName, 'w'))
     return 

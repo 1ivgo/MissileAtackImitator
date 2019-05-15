@@ -12,5 +12,8 @@ namespace MissileAtackImitatorCoreNS
 
         [DataMember]
         public List<PointF> MissileTrajectory;
+
+        [DataMember]
+        public List<PointF> FuzzyMissileTrajectory;
     }
 }
