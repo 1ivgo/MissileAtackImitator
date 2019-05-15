@@ -35,6 +35,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtAddAircraftPoints = new System.Windows.Forms.ToolStripButton();
             this.tsbtAddMissile = new System.Windows.Forms.ToolStripButton();
+            this.tsbtCancellModes = new System.Windows.Forms.ToolStripButton();
             this.tsbtClear = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtSettings = new System.Windows.Forms.ToolStripButton();
@@ -42,12 +43,14 @@
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.tsbtCancellModes = new System.Windows.Forms.ToolStripButton();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -105,6 +108,16 @@
             this.tsbtAddMissile.Size = new System.Drawing.Size(47, 47);
             this.tsbtAddMissile.Click += new System.EventHandler(this.TsbtAddMissile_Click);
             // 
+            // tsbtCancellModes
+            // 
+            this.tsbtCancellModes.AutoSize = false;
+            this.tsbtCancellModes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbtCancellModes.Image = global::MissileAtackImitatorNS.Properties.Resources.Cancell;
+            this.tsbtCancellModes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtCancellModes.Name = "tsbtCancellModes";
+            this.tsbtCancellModes.Size = new System.Drawing.Size(47, 47);
+            this.tsbtCancellModes.Click += new System.EventHandler(this.TsbtCancellModes_Click);
+            // 
             // tsbtClear
             // 
             this.tsbtClear.AutoSize = false;
@@ -147,6 +160,10 @@
             this.splitContainer.Location = new System.Drawing.Point(0, 50);
             this.splitContainer.Name = "splitContainer";
             // 
+            // splitContainer.Panel1
+            // 
+            this.splitContainer.Panel1.Controls.Add(this.dataGridView1);
+            // 
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.AutoScroll = true;
@@ -170,15 +187,16 @@
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
-            // tsbtCancellModes
+            // dataGridView1
             // 
-            this.tsbtCancellModes.AutoSize = false;
-            this.tsbtCancellModes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtCancellModes.Image = global::MissileAtackImitatorNS.Properties.Resources.Cancell;
-            this.tsbtCancellModes.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtCancellModes.Name = "tsbtCancellModes";
-            this.tsbtCancellModes.Size = new System.Drawing.Size(47, 47);
-            this.tsbtCancellModes.Click += new System.EventHandler(this.TsbtCancellModes_Click);
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(273, 410);
+            this.dataGridView1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -196,10 +214,12 @@
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -220,6 +240,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton tsbtAddMissile;
         private System.Windows.Forms.ToolStripButton tsbtCancellModes;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

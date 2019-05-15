@@ -1,13 +1,15 @@
-﻿using MissileAtackImitatorNS.Properties;
+﻿using MissileAtackImitator.View.Forms;
+using MissileAtackImitatorNS.Properties;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace MissileAtackImitatorNS.View
 {
-    public static class GetValueDialog
+    public static class GetValueDialog<T>
     {
-        public static double Show(string title)
+        public static T Show(MainForm mainForm, string title)
         {
-            double result = 0;
+            T result = default(T);
 
             var form = new Form()
             {
@@ -50,40 +52,31 @@ namespace MissileAtackImitatorNS.View
             };
             btOk.Click += (sender, e) =>
             {
-                ValidateDouble(form, tb, ref result);
+                Validate(mainForm, form, tb, ref result);
             };
             tlp.Controls.Add(btOk);
 
             form.KeyDown += (sender, e) =>
             {
                 if (e.KeyCode == Keys.Enter)
-                    ValidateDouble(form, tb, ref result);
+                    Validate(mainForm, form, tb, ref result);
             };
 
             form.ShowDialog();
             return result;
         }
 
-        private static void ValidateDouble(Form form, TextBox tb, ref double result)
+        private static void Validate(MainForm mainForm, Form form, TextBox tb, ref T result)
         {
-            bool parseResult = double.TryParse(tb.Text, out result);
-
-            if(parseResult)
+            try
             {
+                result = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(tb.Text);
                 form.Close();
             }
-            else
+            catch (System.Exception ex)
             {
-                DialogResult dr = MessageBox.Show(
-                    "Введены неверные данные",
-                    "Внимание",
-                    MessageBoxButtons.RetryCancel,
-                    MessageBoxIcon.Warning);
-
-                if (dr == DialogResult.Cancel)
-                    form.Close();
-                else
-                    tb.Clear();
+                mainForm.ShowError(ex.Message, "Ошибка");
+                tb.Clear();
             }
         }
     }

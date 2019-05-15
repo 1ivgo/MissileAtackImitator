@@ -82,6 +82,7 @@
             this.btChangePythonScriptFilename.TabIndex = 4;
             this.btChangePythonScriptFilename.Text = "Изменить";
             this.btChangePythonScriptFilename.UseVisualStyleBackColor = true;
+            this.btChangePythonScriptFilename.Click += new System.EventHandler(this.btChangePythonScriptFilename_Click);
             // 
             // label1
             // 
