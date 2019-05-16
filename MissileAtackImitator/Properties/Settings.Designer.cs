@@ -50,9 +50,9 @@ namespace MissileAtackImitatorNS.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int MissileVelocityModule {
+        public double MissileVelocityModule {
             get {
-                return ((int)(this["MissileVelocityModule"]));
+                return ((double)(this["MissileVelocityModule"]));
             }
             set {
                 this["MissileVelocityModule"] = value;

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace MissileAtackImitatorNS.View
 {
@@ -10,6 +11,22 @@ namespace MissileAtackImitatorNS.View
         {
             pen = new Pen(color, 5);
             pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+        }
+
+        internal override void Add(Control parent, string text, Point location, Size size)
+        {
+            if (Count == 2)
+            {
+                parent.Controls.Remove(this[0]);
+                RemoveAt(0);
+            }
+
+            for (int i = 0; i < Count; i++)
+            {
+                this[i].UpdateIndex(i);
+            }
+
+            base.Add(parent, text, location, size);
         }
 
         public override void Draw(Graphics graphics)

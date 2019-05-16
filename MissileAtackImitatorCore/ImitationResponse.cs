@@ -11,9 +11,15 @@ namespace MissileAtackImitatorCoreNS
         public List<PointF> AircraftTrajectory;
 
         [DataMember]
-        public List<PointF> MissileTrajectory;
+        public MissileInfo UsualMissile; //Serega 
 
         [DataMember]
-        public List<PointF> FuzzyMissileTrajectory;
+        public MissileInfo FuzzyMissile; //Ibragim
+
+        public struct MissileInfo
+        {
+            public List<PointF> Trajectory;
+            public bool IsHit;
+        }
     }
 }

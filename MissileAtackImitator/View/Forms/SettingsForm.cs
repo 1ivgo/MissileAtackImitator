@@ -1,12 +1,14 @@
 ﻿using System.Windows.Forms;
 using MissileAtackImitatorNS.Properties;
 using MissileAtackImitator;
+using System;
 
 namespace MissileAtackImitatorNS.View.Forms
 {
     internal partial class SettingsForm : Form
     {
         private const string noData = "Нет данных";
+        private const int maxStringLenght = 80;
         private Controller controller = null;
 
         public SettingsForm(Controller controller)
@@ -15,29 +17,34 @@ namespace MissileAtackImitatorNS.View.Forms
             this.controller = controller;
         }
 
+        public Action SettingsChanged { get; set; } = delegate { };
+
         internal void Build()
         {
             string pythonScriptFilename = Settings.Default.PythonScriptFilename;
             int stepsCont = Settings.Default.StepsCount;
-            int missileVelocityModule = Settings.Default.MissileVelocityModule;
+            double missileVelocityModule = Settings.Default.MissileVelocityModule;
 
             if (pythonScriptFilename == string.Empty)
                 lbPythonScriptFilename.Text = noData;
             else
             {
-                int dividerIndex = pythonScriptFilename.Length / 2;
-                pythonScriptFilename = pythonScriptFilename.Insert(dividerIndex, "\r\n");
-                lbPythonScriptFilename.Text = pythonScriptFilename;
+                SetPythonScriptFilename(pythonScriptFilename);
             }
 
             nudPointsCount.Value = stepsCont;
-            nudMissileVelocity.Value = missileVelocityModule;
+            nudMissileVelocity.Value = (decimal)missileVelocityModule;
         }
 
-        private void btApply_Click(object sender, System.EventArgs e)
+        private void Apply()
         {
             string pythonScriptFilename = lbPythonScriptFilename.Text;
-            pythonScriptFilename = pythonScriptFilename.Replace("\r\n", string.Empty);
+
+            if (pythonScriptFilename.Contains(Environment.NewLine))
+            {
+                pythonScriptFilename = pythonScriptFilename.Replace(Environment.NewLine, string.Empty);
+            }
+
             int stepsCount = (int)nudPointsCount.Value;
             int velocityModule = (int)nudMissileVelocity.Value;
 
@@ -45,15 +52,41 @@ namespace MissileAtackImitatorNS.View.Forms
             Settings.Default.StepsCount = stepsCount;
             Settings.Default.MissileVelocityModule = velocityModule;
 
+            SettingsChanged();
             Close();
         }
 
-        private void btChangePythonScriptFilename_Click(object sender, System.EventArgs e)
+        private void SetPythonScriptFilename(string pythonScriptFilename)
+        {
+            if (pythonScriptFilename.Length > maxStringLenght)
+            {
+                int dividerIndex = pythonScriptFilename.Length / 2;
+                pythonScriptFilename = pythonScriptFilename.Insert(dividerIndex, Environment.NewLine);
+            }
+            lbPythonScriptFilename.Text = pythonScriptFilename;
+        }
+
+        private void btApply_Click(object sender, System.EventArgs e)
+        {
+            Apply();
+        }
+
+        private void btChangePythonScriptFilename_Click(object sender, EventArgs e)
         {
             string pythonScriptFilename = controller.ChangePythonScriptFilename();
-            int dividerIndex = pythonScriptFilename.Length / 2;
-            pythonScriptFilename = pythonScriptFilename.Insert(dividerIndex, "\r\n");
-            lbPythonScriptFilename.Text = pythonScriptFilename;
+            SetPythonScriptFilename(pythonScriptFilename);
+        }
+
+        private void SettingsForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                Apply();
+        }
+
+        private void btReset_Click(object sender, EventArgs e)
+        {
+            Settings.Default.Reset();
+            Build();
         }
     }
 }

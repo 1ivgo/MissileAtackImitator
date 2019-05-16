@@ -39,6 +39,11 @@ namespace MissileAtackImitatorNS.View
             graphics.DrawString(index.ToString(), font, brush, stringLocation);
         }
 
+        internal void UpdateIndex(int i)
+        {
+            index = i;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (isDisposed)
