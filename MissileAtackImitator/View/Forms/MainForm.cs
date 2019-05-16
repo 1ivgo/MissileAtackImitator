@@ -33,6 +33,9 @@ namespace MissileAtackImitator.View.Forms
                 graphics,
                 new Rectangle(0, 0, pictureBox.Width, pictureBox.Height));
             sceneObjects = new List<IDrawable>();
+            UpdateRequest();
+            BuildDataGridView();
+            UpdateDataGridView();
         }
 
         internal string ShowOpenFileDialog(string filter, string title)
@@ -87,20 +90,36 @@ namespace MissileAtackImitator.View.Forms
 
         private void SetAddAircraftPointsMode()
         {
-            aircraftPoints = new DraggablePoints(Color.Red);
-            sceneObjects.Add(aircraftPoints);
+            if (aircraftPoints == null)
+            {
+                aircraftPoints = new DraggablePoints(Color.Red);
+                sceneObjects.Add(aircraftPoints);
+            }
+
             tsbtAddMissile.Checked = false;
             pictureBox.MouseClick += PictureBox_AircraftMouseClick;
             pictureBox.MouseClick -= PictureBox_MissileMouseClick;
+            tsbtClear.Click -= TsbtClear_Click;
+            tsbtClear.Click -= TsbtMissileClear_Click;
+            tsbtClear.Click += TsbtAirplaneClear_Click;
         }
 
         private void SetAddMissileMode()
         {
+            if (missilePoints != null)
+            {
+                missilePoints.Clear(true);
+                sceneObjects.Remove(missilePoints);
+            }
+
             missilePoints = new MissileDraggablePoints(Color.Black);
             sceneObjects.Add(missilePoints);
             tsbtAddAircraftPoints.Checked = false;
             pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
             pictureBox.MouseClick += PictureBox_MissileMouseClick;
+            tsbtClear.Click -= TsbtClear_Click;
+            tsbtClear.Click -= TsbtAirplaneClear_Click;
+            tsbtClear.Click += TsbtMissileClear_Click;
         }
 
         private void CancellModes()
@@ -109,6 +128,9 @@ namespace MissileAtackImitator.View.Forms
             tsbtAddMissile.Checked = false;
             pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
             pictureBox.MouseClick -= PictureBox_MissileMouseClick;
+            tsbtClear.Click -= TsbtAirplaneClear_Click;
+            tsbtClear.Click -= TsbtMissileClear_Click;
+            tsbtClear.Click += TsbtClear_Click;
         }
 
         private void Clear()
@@ -125,20 +147,66 @@ namespace MissileAtackImitator.View.Forms
             imitationRequest.Missile.LaunchPoint = missilePoints.GetPoints()[0];
             imitationRequest.Missile.Direction = missilePoints.GetPoints()[1];
 
-            int missileVelocityModule = Settings.Default.MissileVelocityModule;
-            if (missileVelocityModule == 0)
+            if (imitationRequest.Missile.VelocityModule == 0)
             {
+                double missileVelocityModule = Settings.Default.MissileVelocityModule;
+                if (missileVelocityModule == 0)
+                {
+                    missileVelocityModule = GetValueDialog<double>.Show(this, "Скорость ракеты");
+                }
 
+                imitationRequest.Missile.VelocityModule = missileVelocityModule;
             }
 
-            int stepsCount = Settings.Default.StepsCount;
-            if (stepsCount == 0)
+            if (imitationRequest.StepsCount == 0)
             {
+                int stepsCount = Settings.Default.StepsCount;
+                if (stepsCount == 0)
+                {
+                    stepsCount = GetValueDialog<int>.Show(this, "Количество точек маршрута");
+                }
 
+                imitationRequest.StepsCount = stepsCount;
+            }
+        }
+
+        private void UpdateRequest()
+        {
+            if (aircraftPoints != null)
+                imitationRequest.AircraftPoints = aircraftPoints.GetPoints();
+
+            if (missilePoints != null)
+            {
+                imitationRequest.Missile.LaunchPoint = missilePoints.GetPoints()[0];
+                imitationRequest.Missile.Direction = missilePoints.GetPoints()[1];
             }
 
-            imitationRequest.StepsCount = stepsCount;
-            imitationRequest.Missile.VelocityModule = missileVelocityModule;
+            imitationRequest.Missile.VelocityModule = Settings.Default.MissileVelocityModule;
+            imitationRequest.StepsCount = Settings.Default.StepsCount;
+        }
+
+        private void BuildDataGridView()
+        {
+            dataGridView.Rows.Add(4);
+            dataGridView.Rows[0].Cells[0].Value = "Количество точек маршрута";
+            dataGridView.Rows[1].Cells[0].Value = "Ускорение ракеты";
+            dataGridView.Rows[2].Cells[0].Value = "Длина траектории обычной ракеты";
+            dataGridView.Rows[2].Cells[0].Style.ForeColor = Color.Red;
+            dataGridView.Rows[3].Cells[0].Value = "Длина траектории нечеткой ракеты";
+            dataGridView.Rows[3].Cells[0].Style.ForeColor = Color.Blue;
+        }
+
+        private void UpdateDataGridView()
+        {
+            dataGridView.Rows[0].Cells[1].Value = imitationRequest.StepsCount;
+            dataGridView.Rows[1].Cells[1].Value = imitationRequest.Missile.VelocityModule;
+        }
+
+        private void OnSettingsFormSettingsChanged()
+        {
+            imitationRequest.StepsCount = Settings.Default.StepsCount;
+            imitationRequest.Missile.VelocityModule = Settings.Default.MissileVelocityModule;
+            UpdateDataGridView();
         }
 
         private void timer_Tick(object sender, System.EventArgs e)
@@ -163,10 +231,7 @@ namespace MissileAtackImitator.View.Forms
                 return;
             }
 
-            imitationRequest.AircraftPoints = aircraftPoints.GetPoints();
-            imitationRequest.Missile.LaunchPoint = missilePoints.GetPoints()[0];
-            imitationRequest.Missile.Direction = missilePoints.GetPoints()[1];
-            imitationRequest.StepsCount = 500;
+            CreateRequest();
 
             controller.DoRequest(sceneObjects, imitationRequest);
 
@@ -176,6 +241,7 @@ namespace MissileAtackImitator.View.Forms
         private void TsBtSettings_Click(object sender, System.EventArgs e)
         {
             var settingsForm = new SettingsForm(controller);
+            settingsForm.SettingsChanged += OnSettingsFormSettingsChanged;
             settingsForm.Build();
             settingsForm.ShowDialog();
             //controller.ChangePythonScriptFilename();
@@ -183,9 +249,18 @@ namespace MissileAtackImitator.View.Forms
 
         private void TsbtClear_Click(object sender, System.EventArgs e)
         {
-            CancellModes();
             Clear();
             controller.Clear(sceneObjects);
+        }
+
+        private void TsbtAirplaneClear_Click(object sender, System.EventArgs e)
+        {
+            aircraftPoints.Clear(true);
+        }
+
+        private void TsbtMissileClear_Click(object sender, System.EventArgs e)
+        {
+            missilePoints.Clear(true);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

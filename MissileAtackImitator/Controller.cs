@@ -16,6 +16,7 @@ namespace MissileAtackImitator
         private MainForm mainForm = null;
         private FlyingSceneObject aircraft = null;
         private FlyingSceneObject missile = null;
+        private FlyingSceneObject fuzzyMissile = null;
 
         public Controller(MainForm mainForm)
         {
@@ -76,11 +77,16 @@ namespace MissileAtackImitator
             aircraft = new FlyingSceneObject(aircraftBitmap, aircraftScenePoints);
             sceneObjects.Add(aircraft);
 
-            List<PointF> missileTrajectory = response.MissileTrajectory;
+            List<PointF> missileTrajectory = response.UsualMissile.Trajectory;
             var missileBitmap = new Bitmap(Resources.Missile1, 10, 10);
             var missileScenePoints = new ScenePoints(missileTrajectory, pointSize, Brushes.Red);
             missile = new FlyingSceneObject(missileBitmap, missileScenePoints);
             sceneObjects.Add(missile);
+
+            List<PointF> fuzzyMissileTrajectory = response.FuzzyMissile.Trajectory;
+            var fuzzyMissileScenePoints = new ScenePoints(fuzzyMissileTrajectory, pointSize, Brushes.Blue);
+            fuzzyMissile = new FlyingSceneObject(missileBitmap, fuzzyMissileScenePoints);
+            sceneObjects.Add(fuzzyMissile);
         }
 
         internal string ChangePythonScriptFilename()
@@ -101,8 +107,11 @@ namespace MissileAtackImitator
             if (aircraft != null)
                 aircraft.Index++;
 
-            if (aircraft != null)
+            if (missile != null)
                 missile.Index++;
+
+            if (missile != null)
+                fuzzyMissile.Index++;
         }
 
         internal void Clear(List<IDrawable> sceneObjects)

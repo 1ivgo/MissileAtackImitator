@@ -36,11 +36,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.nudPointsCount = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.btApply = new System.Windows.Forms.Button();
             this.nudMissileVelocity = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btApply = new System.Windows.Forms.Button();
+            this.btReset = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPointsCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMissileVelocity)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
@@ -56,8 +59,8 @@
             this.tableLayoutPanel.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel.Controls.Add(this.nudPointsCount, 1, 2);
             this.tableLayoutPanel.Controls.Add(this.label3, 0, 3);
-            this.tableLayoutPanel.Controls.Add(this.btApply, 1, 4);
             this.tableLayoutPanel.Controls.Add(this.nudMissileVelocity, 1, 3);
+            this.tableLayoutPanel.Controls.Add(this.flowLayoutPanel1, 1, 4);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -149,19 +152,9 @@
             this.label3.Text = "Скорость ракеты\r\nпо умолчанию";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // btApply
-            // 
-            this.btApply.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btApply.Location = new System.Drawing.Point(383, 126);
-            this.btApply.Name = "btApply";
-            this.btApply.Size = new System.Drawing.Size(75, 23);
-            this.btApply.TabIndex = 7;
-            this.btApply.Text = "ОК";
-            this.btApply.UseVisualStyleBackColor = true;
-            this.btApply.Click += new System.EventHandler(this.btApply_Click);
-            // 
             // nudMissileVelocity
             // 
+            this.nudMissileVelocity.DecimalPlaces = 2;
             this.nudMissileVelocity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.nudMissileVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nudMissileVelocity.Location = new System.Drawing.Point(157, 86);
@@ -175,6 +168,40 @@
             this.nudMissileVelocity.TabIndex = 8;
             this.nudMissileVelocity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.Controls.Add(this.btApply);
+            this.flowLayoutPanel1.Controls.Add(this.btReset);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(157, 126);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(301, 29);
+            this.flowLayoutPanel1.TabIndex = 9;
+            // 
+            // btApply
+            // 
+            this.btApply.AutoSize = true;
+            this.btApply.Location = new System.Drawing.Point(223, 3);
+            this.btApply.Name = "btApply";
+            this.btApply.Size = new System.Drawing.Size(75, 23);
+            this.btApply.TabIndex = 0;
+            this.btApply.Text = "OK";
+            this.btApply.UseVisualStyleBackColor = true;
+            this.btApply.Click += new System.EventHandler(this.btApply_Click);
+            // 
+            // btReset
+            // 
+            this.btReset.AutoSize = true;
+            this.btReset.Location = new System.Drawing.Point(142, 3);
+            this.btReset.Name = "btReset";
+            this.btReset.Size = new System.Drawing.Size(75, 23);
+            this.btReset.TabIndex = 1;
+            this.btReset.Text = "Сбросить";
+            this.btReset.UseVisualStyleBackColor = true;
+            this.btReset.Click += new System.EventHandler(this.btReset_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -186,10 +213,13 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingsForm";
             this.Text = "Настройки";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SettingsForm_KeyDown);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPointsCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMissileVelocity)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -204,7 +234,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown nudPointsCount;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btApply;
         private System.Windows.Forms.NumericUpDown nudMissileVelocity;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button btApply;
+        private System.Windows.Forms.Button btReset;
     }
 }

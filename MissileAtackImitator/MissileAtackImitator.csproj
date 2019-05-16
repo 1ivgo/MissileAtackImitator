@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="Data\CurrentInfoDGV.cs" />
+    <Compile Include="Data\CurrentInfoDGVRow.cs" />
     <Compile Include="View\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

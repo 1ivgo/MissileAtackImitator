@@ -14,6 +14,14 @@ namespace MissileAtackImitatorNS.View
             this.color = color;
         }
 
+        public virtual void Draw(Graphics graphics)
+        {
+            foreach (var point in this)
+            {
+                point.Draw(graphics);
+            }
+        }
+
         internal virtual void Add(
             Control parent,
             string text,
@@ -32,12 +40,17 @@ namespace MissileAtackImitatorNS.View
             Add(draggablePoint);
         }
 
-        public virtual void Draw(Graphics graphics)
+        internal virtual void Clear(bool isFull)
         {
-            foreach (var point in this)
+            if (isFull)
             {
-                point.Draw(graphics);
+                foreach (var point in this)
+                {
+                    point.Parent.Controls.Remove(point);
+                }
             }
+
+            Clear();
         }
 
         internal List<Point> GetPoints()
