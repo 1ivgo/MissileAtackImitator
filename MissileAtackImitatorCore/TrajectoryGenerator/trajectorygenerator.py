@@ -11,43 +11,50 @@ from bezier import Curve
 import numpy as np
 from numpy import linalg
 from missile import Missile
-import linal as l
+import linal as l 
 
-def calculateImitation(requestFileName, responseFileName):
-    requestFile = open(requestFileName)
-    request = json.load(requestFile)
+class TrajectoryGenerator:
+    def __init__(self, requestFileName, responseFileName):
+        self._request = json.load(open(requestFileName))
+        self._response = {}
+        
+        self._stepsCount = self._request['StepsCount']
+        self._aircraftTrajectory = None
+
+        self._genAircraft()
+        self._genMissilies()
     
-    stepsCount = request['StepsCount']
+        json.dump(self._response, open(responseFileName, 'w'))
+        
+    def _genAircraft(self):
+        curvesBasisPoints = np.hstack(tuple(map(requestPointToNPPoint, 
+                                                self._request['AircraftPoints'])))
 
-    curvesBasisPoints = np.hstack(tuple(map(requestPointToNPPoint, request['AircraftPoints'])))
+        at = calculateAircraftTrajectory(curvesBasisPoints, self._stepsCount)
+        self._response = {'AircraftTrajectory' : list(map(npPointToResponsePoint, 
+                                                          np.hsplit(at, np.shape(at)[1])))}
+        self._aircraftTrajectory = at
 
-    at = calculateAircraftTrajectory(curvesBasisPoints, stepsCount)
-    response = {'AircraftTrajectory' : list(map(npPointToResponsePoint, 
-                                                np.hsplit(at, np.shape(at)[1])))}
-    
-    missile = request['Missile']
-    
-    m1 = Missile()
-    m1.stepsCount = stepsCount
-    m1.launchPoint = requestPointToNPPoint(missile['LaunchPoint'])
-    direction = requestPointToNPPoint(missile['Direction']) - m1.launchPoint
-    m1.startVelocity = l.unitVector(direction) * missile['VelocityModule']
-    m1.k = 20
+    def _genMissilies(self):
+        missile = self._request['Missile']
+        
+        usual = Missile()
+        usual.stepsCount = self._stepsCount
+        usual.launchPoint = requestPointToNPPoint(missile['LaunchPoint'])
+        direction = requestPointToNPPoint(missile['Direction']) - usual.launchPoint
+        usual.startVelocity = l.unitVector(direction) * missile['VelocityModule']
+        usual.k = 20
 
-    m2 = m1.copy()
-    m2.k = 1
+        fuzzy = usual.copy()
+        fuzzy.k = 1
 
-    mt = m1.trajectory(at)
-    fuzzyMt = m2.trajectory(at)
-    
-    response['MissileTrajectory'] = list(map(npPointToResponsePoint, 
-                                                np.hsplit(mt, np.shape(mt)[1])))
+        ut = usual.trajectory(self._aircraftTrajectory)
+        ut = list(map(npPointToResponsePoint, np.hsplit(ut, np.shape(ut)[1])))
+        self._response['UsualMissile'] = {'Trajectory' : ut, 'IsHit' : usual.hasHit}
 
-    response['FuzzyMissileTrajectory'] = list(map(npPointToResponsePoint, 
-                                                np.hsplit(fuzzyMt, np.shape(fuzzyMt)[1])))                                           
-
-    json.dump(response, open(responseFileName, 'w'))
-    return 
+        ft = fuzzy.trajectory(self._aircraftTrajectory)
+        ft = list(map(npPointToResponsePoint, np.hsplit(ft, np.shape(ft)[1])))                                           
+        self._response['FuzzyMissileTrajectory'] = {'Trajectory' : ft, 'IsHit' : fuzzy.hasHit}
 
 def calculateAircraftTrajectory(curvesBasisPoints, stepsCount):
     curves = npPointsToCurves(curvesBasisPoints, 3)
@@ -80,5 +87,5 @@ if __name__ == '__main__':
         print(__doc__)
         exit(1)
 
-    calculateImitation(sys.argv[1], sys.argv[2])
+    TrajectoryGenerator(sys.argv[1], sys.argv[2])
     print('Done')
