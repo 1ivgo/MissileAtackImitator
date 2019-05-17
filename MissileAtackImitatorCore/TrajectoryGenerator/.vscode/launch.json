@@ -11,7 +11,7 @@
             "program": "trajectorygenerator.py",
             "console": "integratedTerminal",
             "args": ["./tests/request.json", 
-                     "../response.json"]
+                     "./tests/tmp-response.json"]
 
         }]
 }

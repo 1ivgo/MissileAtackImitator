@@ -10,6 +10,7 @@ class Missile:
         self.startVelocity = None
         self.k = None
         self.angleLimit = np.pi / 36
+        self.hasHit = False
 
     def copy(self):
         return copy.deepcopy(self)
@@ -30,6 +31,7 @@ class Missile:
         currentDistance = np.linalg.norm(self.sightLine)
 
         if currentDistance <= 5:
+            self.hasHit = True
             return self.points
 
         sightAngleDelta = l.angle(nextSightLine) \
