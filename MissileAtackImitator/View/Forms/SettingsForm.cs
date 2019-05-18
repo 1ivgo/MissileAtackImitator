@@ -64,6 +64,7 @@ namespace MissileAtackImitatorNS.View.Forms
                 pythonScriptFilename = pythonScriptFilename.Insert(dividerIndex, Environment.NewLine);
             }
             lbPythonScriptFilename.Text = pythonScriptFilename;
+            Settings.Default.Save();
         }
 
         private void btApply_Click(object sender, System.EventArgs e)

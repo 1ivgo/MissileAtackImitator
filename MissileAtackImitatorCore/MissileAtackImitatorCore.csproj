@@ -52,6 +52,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SceneObjects\IDrawable.cs" />
+    <Compile Include="SceneObjects\Missile.cs" />
     <Compile Include="SceneObjects\ScenePoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

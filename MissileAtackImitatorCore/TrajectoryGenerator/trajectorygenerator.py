@@ -54,7 +54,7 @@ class TrajectoryGenerator:
 
         ft = fuzzy.trajectory(self._aircraftTrajectory)
         ft = list(map(npPointToResponsePoint, np.hsplit(ft, np.shape(ft)[1])))                                           
-        self._response['FuzzyMissileTrajectory'] = {'Trajectory' : ft, 'IsHit' : fuzzy.hasHit}
+        self._response['FuzzyMissile'] = {'Trajectory' : ft, 'IsHit' : fuzzy.hasHit}
 
 def calculateAircraftTrajectory(curvesBasisPoints, stepsCount):
     curves = npPointsToCurves(curvesBasisPoints, 3)
