@@ -46,10 +46,10 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.timer = new System.Windows.Forms.Timer(this.components);
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -214,6 +214,18 @@
             this.dataGridView.Size = new System.Drawing.Size(273, 410);
             this.dataGridView.TabIndex = 0;
             // 
+            // colName
+            // 
+            this.colName.HeaderText = "Параметер";
+            this.colName.Name = "colName";
+            // 
+            // colValue
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colValue.DefaultCellStyle = dataGridViewCellStyle2;
+            this.colValue.HeaderText = "Значение";
+            this.colValue.Name = "colValue";
+            // 
             // pictureBox
             // 
             this.pictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
@@ -228,18 +240,6 @@
             // timer
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // colName
-            // 
-            this.colName.HeaderText = "Параметер";
-            this.colName.Name = "colName";
-            // 
-            // colValue
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colValue.DefaultCellStyle = dataGridViewCellStyle2;
-            this.colValue.HeaderText = "Значение";
-            this.colValue.Name = "colValue";
             // 
             // MainForm
             // 

@@ -53,9 +53,14 @@ namespace MissileAtackImitator.View.Forms
             return filename;
         }
 
-        internal void ShowError(string message, string tittle)
+        internal void ShowError(string message)
         {
-            MessageBox.Show(message, tittle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        internal void ShowMessage(string message)
+        {
+            MessageBox.Show(message, Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Draw()
@@ -99,6 +104,7 @@ namespace MissileAtackImitator.View.Forms
             tsbtAddMissile.Checked = false;
             pictureBox.MouseClick += PictureBox_AircraftMouseClick;
             pictureBox.MouseClick -= PictureBox_MissileMouseClick;
+            pictureBox.Cursor = Cursors.Hand;
             tsbtClear.Click -= TsbtClear_Click;
             tsbtClear.Click -= TsbtMissileClear_Click;
             tsbtClear.Click += TsbtAirplaneClear_Click;
@@ -117,6 +123,7 @@ namespace MissileAtackImitator.View.Forms
             tsbtAddAircraftPoints.Checked = false;
             pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
             pictureBox.MouseClick += PictureBox_MissileMouseClick;
+            pictureBox.Cursor = Cursors.Hand;
             tsbtClear.Click -= TsbtClear_Click;
             tsbtClear.Click -= TsbtAirplaneClear_Click;
             tsbtClear.Click += TsbtMissileClear_Click;
@@ -128,6 +135,7 @@ namespace MissileAtackImitator.View.Forms
             tsbtAddMissile.Checked = false;
             pictureBox.MouseClick -= PictureBox_AircraftMouseClick;
             pictureBox.MouseClick -= PictureBox_MissileMouseClick;
+            pictureBox.Cursor = Cursors.Default;
             tsbtClear.Click -= TsbtAirplaneClear_Click;
             tsbtClear.Click -= TsbtMissileClear_Click;
             tsbtClear.Click += TsbtClear_Click;
@@ -135,8 +143,9 @@ namespace MissileAtackImitator.View.Forms
 
         private void Clear()
         {
-            pictureBox.Controls.Clear();
-            sceneObjects.Clear();
+            aircraftPoints.Clear(true);
+            missilePoints.Clear(true);
+            controller.Clear(sceneObjects);
             bufferedGraphics.Graphics.Clear(Color.White);
             bufferedGraphics.Render();
         }
@@ -218,7 +227,7 @@ namespace MissileAtackImitator.View.Forms
         private void TsbtPlay_Click(object sender, System.EventArgs e)
         {
             CancellModes();
-            controller.Clear(sceneObjects);
+            controller.Reset(sceneObjects);
 
             if (aircraftPoints.Count < 2)
             {
@@ -250,7 +259,7 @@ namespace MissileAtackImitator.View.Forms
         private void TsbtClear_Click(object sender, System.EventArgs e)
         {
             Clear();
-            controller.Clear(sceneObjects);
+            controller.Reset(sceneObjects);
         }
 
         private void TsbtAirplaneClear_Click(object sender, System.EventArgs e)

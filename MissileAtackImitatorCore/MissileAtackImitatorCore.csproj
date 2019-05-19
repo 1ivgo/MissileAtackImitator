@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SceneObjects\Aircraft.cs" />
     <Compile Include="SceneObjects\FlyingSceneObject.cs" />
     <Compile Include="ImitationRequest.cs" />
     <Compile Include="ImitationResponse.cs" />

@@ -75,7 +75,7 @@ namespace MissileAtackImitatorNS.View
             }
             catch (System.Exception ex)
             {
-                mainForm.ShowError(ex.Message, "Ошибка");
+                mainForm.ShowError(ex.Message);
                 tb.Clear();
             }
         }
