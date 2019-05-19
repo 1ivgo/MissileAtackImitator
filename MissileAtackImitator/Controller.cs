@@ -14,9 +14,9 @@ namespace MissileAtackImitator
         private const string filePathToPython = @"python.exe";
         private const string pythonSuccessMessage = "Done\r\n";
         private MainForm mainForm = null;
-        private FlyingSceneObject aircraft = null;
-        private FlyingSceneObject missile = null;
-        private FlyingSceneObject fuzzyMissile = null;
+        private Aircraft aircraft = null;
+        private Missile usualMissile = null;
+        private Missile fuzzyMissile = null;
 
         public Controller(MainForm mainForm)
         {
@@ -59,34 +59,13 @@ namespace MissileAtackImitator
                         result = sr.ReadToEnd();
                     }
 
-                    mainForm.ShowError(result, "Ошибка при выполнении скрипта");
+                    mainForm.ShowError(result);
                     return;
                 }
             }
 
             File.Delete(requestFilename);
-
-            var response = JsonSaverLoader.Load<ImitationResponse>(responseFilename);
-
-
-            var pointSize = new Size(2, 2);
-
-            List<PointF> aircraftTrajectory = response.AircraftTrajectory;
-            var aircraftBitmap = new Bitmap(Resources.FighterJet, 25, 25);
-            var aircraftScenePoints = new ScenePoints(aircraftTrajectory, pointSize, Brushes.Black);
-            aircraft = new FlyingSceneObject(aircraftBitmap, aircraftScenePoints);
-            sceneObjects.Add(aircraft);
-
-            List<PointF> missileTrajectory = response.UsualMissile.Trajectory;
-            var missileBitmap = new Bitmap(Resources.Missile1, 10, 10);
-            var missileScenePoints = new ScenePoints(missileTrajectory, pointSize, Brushes.Red);
-            missile = new FlyingSceneObject(missileBitmap, missileScenePoints);
-            sceneObjects.Add(missile);
-
-            List<PointF> fuzzyMissileTrajectory = response.FuzzyMissile.Trajectory;
-            var fuzzyMissileScenePoints = new ScenePoints(fuzzyMissileTrajectory, pointSize, Brushes.Blue);
-            fuzzyMissile = new FlyingSceneObject(missileBitmap, fuzzyMissileScenePoints);
-            sceneObjects.Add(fuzzyMissile);
+            GetResponse(responseFilename, sceneObjects);
         }
 
         internal string ChangePythonScriptFilename()
@@ -98,7 +77,6 @@ namespace MissileAtackImitator
             pythonScriptFilename = pythonScriptFilename.Insert(0, "\"");
             pythonScriptFilename = pythonScriptFilename.Insert(pythonScriptFilename.Length, "\"");
             Settings.Default.PythonScriptFilename = pythonScriptFilename;
-
             return pythonScriptFilename;
         }
 
@@ -107,19 +85,72 @@ namespace MissileAtackImitator
             if (aircraft != null)
                 aircraft.Index++;
 
-            if (missile != null)
-                missile.Index++;
+            if (usualMissile != null)
+                usualMissile.Index++;
 
-            if (missile != null)
+            if (fuzzyMissile != null)
                 fuzzyMissile.Index++;
         }
 
-        internal void Clear(List<IDrawable> sceneObjects)
+        internal void Reset(List<IDrawable> sceneObjects)
         {
-            sceneObjects.Remove(aircraft);
-            aircraft = null;
-            sceneObjects.Remove(missile);
-            missile = null;
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                if (sceneObjects[i] is FlyingSceneObject)
+                {
+                    ((FlyingSceneObject)sceneObjects[i]).Dispose();
+                    sceneObjects.Remove(sceneObjects[i]);
+                    i--;
+                }
+            }
+        }
+
+        private void GetResponse(string responseFilename, List<IDrawable> sceneObjects)
+        {
+            var pointSize = new Size(2, 2);
+            var response = JsonSaverLoader.Load<ImitationResponse>(responseFilename);
+
+            if (response.AircraftTrajectory.Count > 0)
+            {
+                List<PointF> aircraftTrajectory = response.AircraftTrajectory;
+                var aircraftBitmap = new Bitmap(Resources.FighterJet, 25, 25);
+                var aircraftScenePoints = new ScenePoints(aircraftTrajectory, pointSize, Brushes.Black);
+                aircraft = new Aircraft(aircraftBitmap, aircraftScenePoints);
+                sceneObjects.Add(aircraft);
+            }
+            else
+                mainForm.ShowMessage("Нет траектории самолета");
+
+            var missileBitmap = new Bitmap(Resources.Missile1, 10, 10);
+
+            if (response.UsualMissile.Trajectory.Count > 0)
+            {
+                List<PointF> missileTrajectory = response.UsualMissile.Trajectory;
+                var missileScenePoints = new ScenePoints(missileTrajectory, pointSize, Brushes.Red);
+                usualMissile = new Missile(missileBitmap, missileScenePoints, response.UsualMissile.IsHit);
+                usualMissile.Hit += OnMissileHit;
+                sceneObjects.Add(usualMissile);
+            }
+            else
+                mainForm.ShowMessage("Нет траектории четкой ракеты");
+
+            if (response.FuzzyMissile.Trajectory.Count > 0)
+            {
+                List<PointF> fuzzyMissileTrajectory = response.FuzzyMissile.Trajectory;
+                var fuzzyMissileScenePoints = new ScenePoints(fuzzyMissileTrajectory, pointSize, Brushes.Blue);
+                fuzzyMissile = new Missile(missileBitmap, fuzzyMissileScenePoints, response.FuzzyMissile.IsHit);
+                fuzzyMissile.Hit += OnMissileHit;
+                sceneObjects.Add(fuzzyMissile);
+            }
+            else
+                mainForm.ShowMessage("Нет траектории нечеткой ракеты");
+        }
+
+        private void OnMissileHit(Missile missile)
+        {
+            var explosionBitmap = new Bitmap(Resources.Explosion, 25, 25);
+            missile.Explosion(explosionBitmap);
+            aircraft?.Explosion(explosionBitmap);
         }
     }
 }

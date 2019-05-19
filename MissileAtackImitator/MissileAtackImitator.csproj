@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Missile.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -103,9 +104,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Missile.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MissileAtackImitatorCore\MissileAtackImitatorCore.csproj">
       <Project>{3BB9387E-9DE3-4B69-BB18-63F8EC23EEB9}</Project>
       <Name>MissileAtackImitatorCore</Name>
@@ -131,6 +129,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FighterJet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Explosion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Missile.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

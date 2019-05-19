@@ -28,9 +28,7 @@ namespace MissileAtackImitatorNS.View.Forms
             if (pythonScriptFilename == string.Empty)
                 lbPythonScriptFilename.Text = noData;
             else
-            {
                 SetPythonScriptFilename(pythonScriptFilename);
-            }
 
             nudPointsCount.Value = stepsCont;
             nudMissileVelocity.Value = (decimal)missileVelocityModule;
@@ -40,9 +38,12 @@ namespace MissileAtackImitatorNS.View.Forms
         {
             string pythonScriptFilename = lbPythonScriptFilename.Text;
 
-            if (pythonScriptFilename.Contains(Environment.NewLine))
+            if (pythonScriptFilename == noData)
+                pythonScriptFilename = string.Empty;
+            else
             {
-                pythonScriptFilename = pythonScriptFilename.Replace(Environment.NewLine, string.Empty);
+                if (pythonScriptFilename.Contains(Environment.NewLine))
+                    pythonScriptFilename = pythonScriptFilename.Replace(Environment.NewLine, string.Empty);
             }
 
             int stepsCount = (int)nudPointsCount.Value;

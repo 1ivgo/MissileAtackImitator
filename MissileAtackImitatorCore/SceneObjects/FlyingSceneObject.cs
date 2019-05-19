@@ -1,40 +1,58 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using MissileAtackImitatorCoreNS.SceneObjects;
 
 namespace MissileAtackImitatorCoreNS
 {
-    public class FlyingSceneObject : IDrawable
+    public abstract class FlyingSceneObject : IDrawable, IDisposable
     {
-        private ScenePoints points;
-        private int index = 0;
-        private Bitmap bitmap;
+        protected Bitmap bitmap;
+        protected ScenePoints points;
+        protected int index = 0;
+        protected int maxIndex = 0;
+        private bool isDisposed = false;
 
         public FlyingSceneObject(Bitmap bitmap, ScenePoints points)
         {
             this.bitmap = bitmap;
             this.points = points;
+            maxIndex = points.Count - 1;
         }
 
-        public int Index
+        public void Dispose()
         {
-            get
-            {
-                return index;
-            }
-            set
-            {
-                if (value > points.Count - 1 || value < 0)
-                    return;
-
-                index = value;
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        public abstract int Index { get; set; }
 
         public void Draw(Graphics gr)
         {
             var point = new PointF(points[index].X - bitmap.Width / 2, points[index].Y - bitmap.Height / 2);
             gr.DrawImage(bitmap, point);
             points.Draw(gr);
+        }
+
+        public virtual void Explosion(Bitmap bitmap)
+        {
+            this.bitmap = bitmap;
+            maxIndex = Index;
+        }
+
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!isDisposed)
+            {
+                if (isDisposing)
+                {
+                    bitmap.Dispose();
+                }
+
+                points = null;
+                isDisposed = true;
+            }
         }
     }
 }

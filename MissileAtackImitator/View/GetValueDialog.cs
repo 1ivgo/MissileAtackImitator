@@ -15,7 +15,7 @@ namespace MissileAtackImitatorNS.View
             {
                 Width = 320,
                 Height = 125,
-                Text = title,
+                Text = mainForm.Text,
                 AutoSize = true,
                 Icon = Resources.Missile,
                 KeyPreview = true
@@ -75,7 +75,7 @@ namespace MissileAtackImitatorNS.View
             }
             catch (System.Exception ex)
             {
-                mainForm.ShowError(ex.Message, "Ошибка");
+                mainForm.ShowError(ex.Message);
                 tb.Clear();
             }
         }
