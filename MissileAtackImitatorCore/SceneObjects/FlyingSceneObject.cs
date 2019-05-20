@@ -27,6 +27,14 @@ namespace MissileAtackImitatorCoreNS
 
         public abstract int Index { get; set; }
 
+        public int TrajectoryLength
+        {
+            get
+            {
+                return points.Count;
+            }
+        }
+
         public void Draw(Graphics gr)
         {
             var point = new PointF(points[index].X - bitmap.Width / 2, points[index].Y - bitmap.Height / 2);

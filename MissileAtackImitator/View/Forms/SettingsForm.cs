@@ -24,6 +24,7 @@ namespace MissileAtackImitatorNS.View.Forms
             string pythonScriptFilename = Settings.Default.PythonScriptFilename;
             int stepsCont = Settings.Default.StepsCount;
             double missileVelocityModule = Settings.Default.MissileVelocityModule;
+            double propCoeff = Settings.Default.PropCoeff;
 
             if (pythonScriptFilename == string.Empty)
                 lbPythonScriptFilename.Text = noData;
@@ -32,6 +33,7 @@ namespace MissileAtackImitatorNS.View.Forms
 
             nudPointsCount.Value = stepsCont;
             nudMissileVelocity.Value = (decimal)missileVelocityModule;
+            nudPropCoeff.Value = (decimal)propCoeff;
         }
 
         private void Apply()
@@ -47,11 +49,13 @@ namespace MissileAtackImitatorNS.View.Forms
             }
 
             int stepsCount = (int)nudPointsCount.Value;
-            int velocityModule = (int)nudMissileVelocity.Value;
+            double velocityModule = (double)nudMissileVelocity.Value;
+            double propCoeff = (double)nudPropCoeff.Value;
 
             Settings.Default.PythonScriptFilename = pythonScriptFilename;
             Settings.Default.StepsCount = stepsCount;
             Settings.Default.MissileVelocityModule = velocityModule;
+            Settings.Default.PropCoeff = propCoeff;
 
             SettingsChanged();
             Close();

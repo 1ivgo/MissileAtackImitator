@@ -58,5 +58,17 @@ namespace MissileAtackImitatorNS.Properties {
                 this["MissileVelocityModule"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double PropCoeff {
+            get {
+                return ((double)(this["PropCoeff"]));
+            }
+            set {
+                this["PropCoeff"] = value;
+            }
+        }
     }
 }

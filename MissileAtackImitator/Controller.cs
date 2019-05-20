@@ -90,6 +90,8 @@ namespace MissileAtackImitator
 
             if (fuzzyMissile != null)
                 fuzzyMissile.Index++;
+
+            mainForm.Update(usualMissile, fuzzyMissile);
         }
 
         internal void Reset(List<IDrawable> sceneObjects)

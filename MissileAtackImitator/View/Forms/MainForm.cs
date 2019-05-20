@@ -6,6 +6,7 @@ using MissileAtackImitatorNS.Properties;
 using MissileAtackImitatorNS.View;
 using MissileAtackImitatorCoreNS;
 using MissileAtackImitatorNS.View.Forms;
+using MissileAtackImitatorNS.Data;
 
 namespace MissileAtackImitator.View.Forms
 {
@@ -20,6 +21,7 @@ namespace MissileAtackImitator.View.Forms
         private Size scenePointsSize = new Size(10, 10);
         private List<IDrawable> sceneObjects;
         private ImitationRequest imitationRequest;
+        private CurrentInfoDGV dgvData = new CurrentInfoDGV();
 
         public MainForm()
         {
@@ -61,6 +63,12 @@ namespace MissileAtackImitator.View.Forms
         internal void ShowMessage(string message)
         {
             MessageBox.Show(message, Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        internal void Update(FlyingSceneObject usualMissile, FlyingSceneObject fuzzyMissile)
+        {
+            Draw();
+            UpdateDataGridView(usualMissile, fuzzyMissile);
         }
 
         private void Draw()
@@ -216,19 +224,22 @@ namespace MissileAtackImitator.View.Forms
 
         private void BuildDataGridView()
         {
-            dataGridView.Rows.Add(4);
-            dataGridView.Rows[0].Cells[0].Value = "Количество точек маршрута";
-            dataGridView.Rows[1].Cells[0].Value = "Ускорение ракеты";
-            dataGridView.Rows[2].Cells[0].Value = "Длина траектории обычной ракеты";
-            dataGridView.Rows[2].Cells[0].Style.ForeColor = Color.Red;
-            dataGridView.Rows[3].Cells[0].Value = "Длина траектории нечеткой ракеты";
-            dataGridView.Rows[3].Cells[0].Style.ForeColor = Color.Blue;
+            dataGridView.DataSource = dgvData;
+            dataGridView.Columns["Name"].HeaderText = "Параметер";
+            dataGridView.Columns["Value"].HeaderText = "Значение";
+            dgvData.Add("Количество точек маршрута", Settings.Default.StepsCount);
+            dgvData.Add("Скорость ракеты", Settings.Default.MissileVelocityModule);
+            dgvData.Add("Длина траектории четкой ракеты", null);
+            dgvData.Add("Длина тракетории нечеткой ракеты", null);
         }
 
-        private void UpdateDataGridView()
+        private void UpdateDataGridView(FlyingSceneObject usualMissile = null, FlyingSceneObject fuzzyMissile = null)
         {
-            dataGridView.Rows[0].Cells[1].Value = imitationRequest.StepsCount;
-            dataGridView.Rows[1].Cells[1].Value = imitationRequest.Missile.VelocityModule;
+            dgvData["Количество точек маршрута"].Value = Settings.Default.StepsCount;
+            dgvData["Скорость ракеты"].Value = Settings.Default.MissileVelocityModule;
+            dgvData["Длина траектории четкой ракеты"].Value = usualMissile?.TrajectoryLength;
+            dgvData["Длина тракетории нечеткой ракеты"].Value = fuzzyMissile?.TrajectoryLength;
+            dgvData.ResetBindings();
         }
 
         private void OnSettingsFormSettingsChanged()
@@ -241,7 +252,6 @@ namespace MissileAtackImitator.View.Forms
         private void timer_Tick(object sender, System.EventArgs e)
         {
             controller.Update();
-            Draw();
         }
 
         private void TsbtPlay_Click(object sender, System.EventArgs e)
