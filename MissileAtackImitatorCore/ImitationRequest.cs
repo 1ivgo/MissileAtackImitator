@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.Serialization;
-
-namespace MissileAtackImitatorCoreNS
+﻿namespace MissileAtackImitatorCoreNS
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public struct ImitationRequest
     {
@@ -14,13 +14,16 @@ namespace MissileAtackImitatorCoreNS
         public List<Point> AircraftPoints;
 
         [DataMember]
-        public MissileInfo Missile;
+        public MissileInfo Missiles;
 
         public struct MissileInfo
         {
             public Point LaunchPoint;
             public Point Direction;
             public double VelocityModule;
+            public double PropCoeff;
+            public string Aggregation; //Max-Min, MaxProd
+            public string Defuzzification; //RightMax, Centroid
         }
     }
 }

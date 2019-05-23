@@ -70,5 +70,29 @@ namespace MissileAtackImitatorNS.Properties {
                 this["PropCoeff"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RightMax")]
+        public string Defuzzification {
+            get {
+                return ((string)(this["Defuzzification"]));
+            }
+            set {
+                this["Defuzzification"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Max-Prod")]
+        public string Aggregation {
+            get {
+                return ((string)(this["Aggregation"]));
+            }
+            set {
+                this["Aggregation"] = value;
+            }
+        }
     }
 }

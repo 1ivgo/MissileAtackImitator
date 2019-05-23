@@ -1,4 +1,4 @@
-﻿namespace MissileAtackImitator.View.Forms
+﻿namespace MissileAtackImitatorNS.View.Forms
 {
     partial class MainForm
     {
@@ -16,6 +16,8 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                graphics.Dispose();
+                bufferedGraphics.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -239,6 +241,7 @@
             this.Text = "MissileAtackImitator";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();

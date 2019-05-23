@@ -36,7 +36,7 @@ class TrajectoryGenerator:
         self._aircraftTrajectory = at
 
     def _genMissilies(self):
-        missile = self._request['Missile']
+        missile = self._request['Missiles']
         
         usual = Missile()
         usual.stepsCount = self._stepsCount

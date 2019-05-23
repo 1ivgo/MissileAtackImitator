@@ -1,30 +1,22 @@
-﻿using System.Drawing;
-
-namespace MissileAtackImitatorCoreNS.SceneObjects
+﻿namespace MissileAtackImitatorCoreNS.SceneObjects
 {
-    public class Aircraft : FlyingSceneObject
-    {
-        public Aircraft(Bitmap bitmap, ScenePoints points)
-            : base(bitmap, points)
-        {
+    using System.Drawing;
 
+    public class Aircraft : MovableSceneObject
+    {
+        public Aircraft(Bitmap bitmap, ScenePoints points) : base(bitmap, points)
+        {
         }
 
-        public override int Index
+        public override void Move()
         {
-            get
+            if (Index == MaxIndex)
             {
-                return index;
+                return;
             }
-
-            set
+            else
             {
-                if (value > maxIndex || value < 0)
-                {
-                    return;
-                }
-
-                index = value;
+                Index++;
             }
         }
     }

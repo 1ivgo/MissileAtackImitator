@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.Serialization;
-
-namespace MissileAtackImitatorCoreNS
+﻿namespace MissileAtackImitatorCoreNS
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public struct ImitationResponse
     {

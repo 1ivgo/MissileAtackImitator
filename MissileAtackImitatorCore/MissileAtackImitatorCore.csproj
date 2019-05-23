@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SceneObjects\Aircraft.cs" />
-    <Compile Include="SceneObjects\FlyingSceneObject.cs" />
     <Compile Include="ImitationRequest.cs" />
     <Compile Include="ImitationResponse.cs" />
     <Compile Include="JsonSaverLoader.cs" />
@@ -54,6 +53,7 @@
     </Compile>
     <Compile Include="SceneObjects\IDrawable.cs" />
     <Compile Include="SceneObjects\Missile.cs" />
+    <Compile Include="SceneObjects\MovableSceneObject.cs" />
     <Compile Include="SceneObjects\ScenePoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

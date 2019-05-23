@@ -1,42 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using MissileAtackImitator.View.Forms;
-using MissileAtackImitatorCoreNS;
-using MissileAtackImitatorCoreNS.SceneObjects;
-using MissileAtackImitatorNS.Properties;
-
-namespace MissileAtackImitator
+﻿namespace MissileAtackImitatorNS
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.IO;
+    using Data;
+    using MissileAtackImitatorCoreNS;
+    using MissileAtackImitatorCoreNS.SceneObjects;
+    using Properties;
+    using View.Forms;
+
     internal class Controller
     {
-        private const string filePathToPython = @"python.exe";
-        private const string pythonSuccessMessage = "Done\r\n";
+        private const string FilePathToPython = @"python.exe";
+        private const string PythonSuccessMessage = "Done\r\n";
         private MainForm mainForm = null;
-        private Aircraft aircraft = null;
-        private Missile usualMissile = null;
-        private Missile fuzzyMissile = null;
+        private List<MovableSceneObject> sceneObjects = new List<MovableSceneObject>();
 
         public Controller(MainForm mainForm)
         {
             this.mainForm = mainForm;
         }
 
-        internal void DoRequest(List<IDrawable> sceneObjects, ImitationRequest imitationRequest)
+        internal IEnumerable<IDrawable> DoRequest(ImitationRequest imitationRequest, CurrentInfoDGV dgvData)
         {
+            if (dgvData == null)
+            {
+                throw new System.ArgumentNullException(nameof(dgvData));
+            }
+
+            Reset();
+
             var requestFilename = "ImitationRequest.json";
             var responseFilename = "ImitationResponse.json";
             var pythonScriptFilename = Settings.Default.PythonScriptFilename;
 
             if (pythonScriptFilename == string.Empty)
+            {
                 pythonScriptFilename = ChangePythonScriptFilename();
+            }
 
             JsonSaverLoader.Save(imitationRequest, requestFilename);
 
             var processInfoStart = new ProcessStartInfo()
             {
-                FileName = filePathToPython,
+                FileName = FilePathToPython,
                 Arguments = string.Format("{0} {1} {2}", pythonScriptFilename, requestFilename, responseFilename),
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -52,7 +60,7 @@ namespace MissileAtackImitator
                     result = sr.ReadToEnd();
                 }
 
-                if (result != pythonSuccessMessage)
+                if (result != PythonSuccessMessage)
                 {
                     using (var sr = process.StandardError)
                     {
@@ -60,12 +68,13 @@ namespace MissileAtackImitator
                     }
 
                     mainForm.ShowError(result);
-                    return;
+                    return null;
                 }
             }
 
             File.Delete(requestFilename);
-            GetResponse(responseFilename, sceneObjects);
+            GetResponse(responseFilename, sceneObjects, dgvData);
+            return sceneObjects as IEnumerable<IDrawable>;
         }
 
         internal string ChangePythonScriptFilename()
@@ -82,35 +91,29 @@ namespace MissileAtackImitator
 
         internal void Update()
         {
-            if (aircraft != null)
-                aircraft.Index++;
-
-            if (usualMissile != null)
-                usualMissile.Index++;
-
-            if (fuzzyMissile != null)
-                fuzzyMissile.Index++;
-
-            mainForm.Update(usualMissile, fuzzyMissile);
-        }
-
-        internal void Reset(List<IDrawable> sceneObjects)
-        {
-            for (int i = 0; i < sceneObjects.Count; i++)
+            foreach (var sceneObject in sceneObjects)
             {
-                if (sceneObjects[i] is FlyingSceneObject)
-                {
-                    ((FlyingSceneObject)sceneObjects[i]).Dispose();
-                    sceneObjects.Remove(sceneObjects[i]);
-                    i--;
-                }
+                sceneObject.Move();
             }
         }
 
-        private void GetResponse(string responseFilename, List<IDrawable> sceneObjects)
+        internal void Reset()
+        {
+            foreach (var sceneObject in sceneObjects)
+            {
+                sceneObject.Dispose();
+            }
+
+            sceneObjects.Clear();
+        }
+
+        private void GetResponse(string responseFilename, List<MovableSceneObject> sceneObjects, CurrentInfoDGV dgvData)
         {
             var pointSize = new Size(2, 2);
             var response = JsonSaverLoader.Load<ImitationResponse>(responseFilename);
+            Aircraft aircraft = null;
+            var missileBitmap = new Bitmap(Resources.Missile1, 10, 10);
+            var explosionBitmap = new Bitmap(Resources.Explosion, 25, 25);
 
             if (response.AircraftTrajectory.Count > 0)
             {
@@ -121,38 +124,49 @@ namespace MissileAtackImitator
                 sceneObjects.Add(aircraft);
             }
             else
+            {
                 mainForm.ShowMessage("Нет траектории самолета");
-
-            var missileBitmap = new Bitmap(Resources.Missile1, 10, 10);
+            }
 
             if (response.UsualMissile.Trajectory.Count > 0)
             {
                 List<PointF> missileTrajectory = response.UsualMissile.Trajectory;
                 var missileScenePoints = new ScenePoints(missileTrajectory, pointSize, Brushes.Red);
-                usualMissile = new Missile(missileBitmap, missileScenePoints, response.UsualMissile.IsHit);
-                usualMissile.Hit += OnMissileHit;
+                var usualMissile = new Missile(missileBitmap, missileScenePoints, response.UsualMissile.IsHit);
+                usualMissile.Hit += (bitmap) => usualMissile.Explosion(explosionBitmap);
+                dgvData.Set("Длина траектории четкой ракеты", usualMissile.TrajectoryLength);
+
+                if (aircraft != null)
+                {
+                    usualMissile.Hit += (bitmap) => aircraft.Explosion(explosionBitmap);
+                }
+
                 sceneObjects.Add(usualMissile);
             }
             else
+            {
                 mainForm.ShowMessage("Нет траектории четкой ракеты");
+            }
 
             if (response.FuzzyMissile.Trajectory.Count > 0)
             {
                 List<PointF> fuzzyMissileTrajectory = response.FuzzyMissile.Trajectory;
                 var fuzzyMissileScenePoints = new ScenePoints(fuzzyMissileTrajectory, pointSize, Brushes.Blue);
-                fuzzyMissile = new Missile(missileBitmap, fuzzyMissileScenePoints, response.FuzzyMissile.IsHit);
-                fuzzyMissile.Hit += OnMissileHit;
+                var fuzzyMissile = new Missile(missileBitmap, fuzzyMissileScenePoints, response.FuzzyMissile.IsHit);
+                fuzzyMissile.Hit += (bitmap) => fuzzyMissile.Explosion(explosionBitmap);
+                dgvData.Set("Длина траектории нечеткой ракеты", fuzzyMissile.TrajectoryLength);
+                
+                if (aircraft != null)
+                {
+                    fuzzyMissile.Hit += (bitmap) => aircraft.Explosion(explosionBitmap);
+                }
+
                 sceneObjects.Add(fuzzyMissile);
             }
             else
+            {
                 mainForm.ShowMessage("Нет траектории нечеткой ракеты");
-        }
-
-        private void OnMissileHit(Missile missile)
-        {
-            var explosionBitmap = new Bitmap(Resources.Explosion, 25, 25);
-            missile.Explosion(explosionBitmap);
-            aircraft?.Explosion(explosionBitmap);
+            }
         }
     }
 }

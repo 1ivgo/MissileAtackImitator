@@ -1,5 +1,5 @@
-﻿using MissileAtackImitator.View.Forms;
-using MissileAtackImitatorNS.Properties;
+﻿using MissileAtackImitatorNS.Properties;
+using MissileAtackImitatorNS.View.Forms;
 using System.ComponentModel;
 using System.Windows.Forms;
 
