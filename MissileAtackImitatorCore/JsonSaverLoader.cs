@@ -1,20 +1,39 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Json;
-
-namespace MissileAtackImitatorCoreNS
+﻿namespace MissileAtackImitatorCoreNS
 {
+    using System.IO;
+    using System.Runtime.Serialization.Json;
+
     public static class JsonSaverLoader
     {
-        public static void Save<T>(T obj, string filePath)
+        public static void Save<T>(T obj, string filename)
         {
-            using (var fs = new FileStream(filePath, FileMode.Create))
+            if (obj == null)
+            {
+                throw new System.ArgumentNullException(nameof(obj));
+            }
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new System.ArgumentNullException(nameof(filename));
+            }
+
+            using (var fs = new FileStream(filename, FileMode.Create))
+            {
                 new DataContractJsonSerializer(typeof(T)).WriteObject(fs, obj);
+            }
         }
 
-        public static T Load<T>(string filePath)
+        public static T Load<T>(string filename)
         {
-            using (var fs = new FileStream(filePath, FileMode.Open))
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new System.ArgumentNullException(nameof(filename));
+            }
+
+            using (var fs = new FileStream(filename, FileMode.Open))
+            {
                 return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(fs);
+            }
         }
     }
 }

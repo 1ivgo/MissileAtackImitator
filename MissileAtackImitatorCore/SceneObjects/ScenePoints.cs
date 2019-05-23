@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using MissileAtackImitatorCoreNS.SceneObjects;
-
-namespace MissileAtackImitatorCoreNS
+﻿namespace MissileAtackImitatorCoreNS.SceneObjects
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+
     public class ScenePoints : List<RectangleF>, IDrawable
     {
         private Brush brush = null;

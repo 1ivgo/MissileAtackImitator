@@ -1,12 +1,12 @@
-﻿using System;
-using System.Drawing;
-
-namespace MissileAtackImitatorCoreNS.SceneObjects
+﻿namespace MissileAtackImitatorCoreNS.SceneObjects
 {
-    public class Missile : FlyingSceneObject
+    using System;
+    using System.Drawing;
+
+    public class Missile : MovableSceneObject
     {
         private bool isHit = false;
-        
+
         public Missile(Bitmap bitmap, ScenePoints points, bool isHit)
             : base(bitmap, points)
         {
@@ -15,27 +15,19 @@ namespace MissileAtackImitatorCoreNS.SceneObjects
 
         public Action<Missile> Hit { get; set; } = delegate { };
 
-        public override int Index
+        public override void Move()
         {
-            get
+            if (Index == MaxIndex)
             {
-                return index;
-            }
-            set
-            {
-                if (value > maxIndex)
+                if (isHit)
                 {
-                    if (isHit)
-                        Hit(this);
-
-                    return;
+                    Hit(this);
                 }
 
-                if (value < 0)
-                    return;
-
-                index = value;
+                return;
             }
+
+            Index++;
         }
     }
 }

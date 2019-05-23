@@ -11,5 +11,14 @@
     <Setting Name="MissileVelocityModule" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="PropCoeff" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Defuzzification" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RightMax</Value>
+    </Setting>
+    <Setting Name="Aggregation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Max-Prod</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
