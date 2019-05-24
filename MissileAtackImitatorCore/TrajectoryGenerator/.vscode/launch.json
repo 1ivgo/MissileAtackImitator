@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "trajectorygenerator.py",
             "console": "integratedTerminal",
-            "args": ["./tests/request.json", 
+            "args": ["./tests/ImitationRequest.json", 
                      "./tests/tmp-response.json"]
 
         }]

@@ -10,7 +10,8 @@ import json
 from bezier import Curve
 import numpy as np
 from numpy import linalg
-from missile import Missile
+
+import missile
 import linal as l 
 
 class TrajectoryGenerator:
@@ -22,7 +23,7 @@ class TrajectoryGenerator:
         self._aircraftTrajectory = None
 
         self._genAircraft()
-        self._genMissilies()
+        self._genMissiles()
     
         json.dump(self._response, open(responseFileName, 'w'))
         
@@ -31,22 +32,26 @@ class TrajectoryGenerator:
                                                 self._request['AircraftPoints'])))
 
         at = calculateAircraftTrajectory(curvesBasisPoints, self._stepsCount)
-        self._response = {'AircraftTrajectory' : list(map(npPointToResponsePoint, 
-                                                          np.hsplit(at, np.shape(at)[1])))}
+        self._response = {'AircraftTrajectory'
+                          : list(map(npPointToResponsePoint, 
+                                     np.hsplit(at, np.shape(at)[1])))}
         self._aircraftTrajectory = at
 
-    def _genMissilies(self):
-        missile = self._request['Missiles']
+    def _genMissiles(self):
+        settings = self._request['Missiles']
         
-        usual = Missile()
+        usual = missile.Missile()
         usual.stepsCount = self._stepsCount
-        usual.launchPoint = requestPointToNPPoint(missile['LaunchPoint'])
-        direction = requestPointToNPPoint(missile['Direction']) - usual.launchPoint
-        usual.startVelocity = l.unitVector(direction) * missile['VelocityModule']
-        usual.k = 20
+        usual.launchPoint = requestPointToNPPoint(settings['LaunchPoint'])
+        direction = requestPointToNPPoint(settings['Direction']) - usual.launchPoint
+        usual.startVelocity = l.unitVector(direction) * settings['VelocityModule']
+
+        print(settings['PropCoeff'], file=open('log', 'a'))
+        usual.controller = missile.controllers.Proportional(settings['PropCoeff'])
 
         fuzzy = usual.copy()
-        fuzzy.k = 1
+        fuzzy.controller = missile.controllers.Fuzzy(settings['Inference'], 
+                                                     settings['Defuzzification'])
 
         ut = usual.trajectory(self._aircraftTrajectory)
         ut = list(map(npPointToResponsePoint, np.hsplit(ut, np.shape(ut)[1])))

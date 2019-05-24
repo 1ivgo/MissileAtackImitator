@@ -1,4 +1,11 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.jediEnabled": true,
+    "cSpell.words": [
+        "Coeff",
+        "hsplit",
+        "linalg",
+        "skfuzzy"
+    ]
 }
