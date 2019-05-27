@@ -1,0 +1,1 @@
+{"AircraftPoints":[{"x":660,"y":643},{"x":1160,"y":526},{"x":1431,"y":277}],"Missiles":{"Defuzzification":"Right-Max","Direction":{"x":396,"y":288},"Inference":"Max-Prod","LaunchPoint":{"x":218,"y":289},"PropCoeff":20,"VelocityModule":5},"StepsCount":500}
