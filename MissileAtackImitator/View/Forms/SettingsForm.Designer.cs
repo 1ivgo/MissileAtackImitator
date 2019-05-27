@@ -41,24 +41,24 @@
             this.nudPropCoeff = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.rbAggregationMaxMin = new System.Windows.Forms.RadioButton();
-            this.rbAggregationMaxProd = new System.Windows.Forms.RadioButton();
+            this.rbInferenceMaxMin = new System.Windows.Forms.RadioButton();
+            this.rbInferenceMaxProd = new System.Windows.Forms.RadioButton();
             this.label6 = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.rbDefuzzificationRightMax = new System.Windows.Forms.RadioButton();
             this.rbDefuzzificationCentroid = new System.Windows.Forms.RadioButton();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btReset = new System.Windows.Forms.Button();
-            this.btApply = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btApply = new System.Windows.Forms.Button();
+            this.btReset = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPointsCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMissileVelocity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPropCoeff)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
@@ -228,39 +228,39 @@
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.AutoSize = true;
-            this.flowLayoutPanel2.Controls.Add(this.rbAggregationMaxMin);
-            this.flowLayoutPanel2.Controls.Add(this.rbAggregationMaxProd);
+            this.flowLayoutPanel2.Controls.Add(this.rbInferenceMaxMin);
+            this.flowLayoutPanel2.Controls.Add(this.rbInferenceMaxProd);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(208, 202);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(383, 30);
             this.flowLayoutPanel2.TabIndex = 13;
             // 
-            // rbAggregationMaxMin
+            // rbInferenceMaxMin
             // 
-            this.rbAggregationMaxMin.AutoSize = true;
-            this.rbAggregationMaxMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbAggregationMaxMin.Location = new System.Drawing.Point(3, 3);
-            this.rbAggregationMaxMin.Name = "rbAggregationMaxMin";
-            this.rbAggregationMaxMin.Size = new System.Drawing.Size(86, 24);
-            this.rbAggregationMaxMin.TabIndex = 0;
-            this.rbAggregationMaxMin.TabStop = true;
-            this.rbAggregationMaxMin.Text = "Max-Min";
-            this.rbAggregationMaxMin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbAggregationMaxMin.UseVisualStyleBackColor = true;
+            this.rbInferenceMaxMin.AutoSize = true;
+            this.rbInferenceMaxMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rbInferenceMaxMin.Location = new System.Drawing.Point(3, 3);
+            this.rbInferenceMaxMin.Name = "rbInferenceMaxMin";
+            this.rbInferenceMaxMin.Size = new System.Drawing.Size(86, 24);
+            this.rbInferenceMaxMin.TabIndex = 0;
+            this.rbInferenceMaxMin.TabStop = true;
+            this.rbInferenceMaxMin.Text = "Max-Min";
+            this.rbInferenceMaxMin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbInferenceMaxMin.UseVisualStyleBackColor = true;
             // 
-            // rbAggregationMaxProd
+            // rbInferenceMaxProd
             // 
-            this.rbAggregationMaxProd.AutoSize = true;
-            this.rbAggregationMaxProd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbAggregationMaxProd.Location = new System.Drawing.Point(95, 3);
-            this.rbAggregationMaxProd.Name = "rbAggregationMaxProd";
-            this.rbAggregationMaxProd.Size = new System.Drawing.Size(94, 24);
-            this.rbAggregationMaxProd.TabIndex = 1;
-            this.rbAggregationMaxProd.TabStop = true;
-            this.rbAggregationMaxProd.Text = "Max-Prod";
-            this.rbAggregationMaxProd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbAggregationMaxProd.UseVisualStyleBackColor = true;
+            this.rbInferenceMaxProd.AutoSize = true;
+            this.rbInferenceMaxProd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rbInferenceMaxProd.Location = new System.Drawing.Point(95, 3);
+            this.rbInferenceMaxProd.Name = "rbInferenceMaxProd";
+            this.rbInferenceMaxProd.Size = new System.Drawing.Size(94, 24);
+            this.rbInferenceMaxProd.TabIndex = 1;
+            this.rbInferenceMaxProd.TabStop = true;
+            this.rbInferenceMaxProd.Text = "Max-Prod";
+            this.rbInferenceMaxProd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbInferenceMaxProd.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -311,6 +311,17 @@
             this.rbDefuzzificationCentroid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbDefuzzificationCentroid.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.flowLayoutPanel1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(208, 310);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(383, 144);
+            this.panel1.TabIndex = 16;
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.AutoSize = true;
@@ -324,17 +335,6 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(383, 144);
             this.flowLayoutPanel1.TabIndex = 9;
             // 
-            // btReset
-            // 
-            this.btReset.AutoSize = true;
-            this.btReset.Location = new System.Drawing.Point(224, 3);
-            this.btReset.Name = "btReset";
-            this.btReset.Size = new System.Drawing.Size(75, 23);
-            this.btReset.TabIndex = 1;
-            this.btReset.Text = "Сбросить";
-            this.btReset.UseVisualStyleBackColor = true;
-            this.btReset.Click += new System.EventHandler(this.btReset_Click);
-            // 
             // btApply
             // 
             this.btApply.AutoSize = true;
@@ -346,16 +346,16 @@
             this.btApply.UseVisualStyleBackColor = true;
             this.btApply.Click += new System.EventHandler(this.btApply_Click);
             // 
-            // panel1
+            // btReset
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.flowLayoutPanel1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(208, 310);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(383, 144);
-            this.panel1.TabIndex = 16;
+            this.btReset.AutoSize = true;
+            this.btReset.Location = new System.Drawing.Point(224, 3);
+            this.btReset.Name = "btReset";
+            this.btReset.Size = new System.Drawing.Size(75, 23);
+            this.btReset.TabIndex = 1;
+            this.btReset.Text = "Сбросить";
+            this.btReset.UseVisualStyleBackColor = true;
+            this.btReset.Click += new System.EventHandler(this.btReset_Click);
             // 
             // SettingsForm
             // 
@@ -379,10 +379,10 @@
             this.flowLayoutPanel2.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -405,8 +405,8 @@
         private System.Windows.Forms.NumericUpDown nudPropCoeff;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.RadioButton rbAggregationMaxMin;
-        private System.Windows.Forms.RadioButton rbAggregationMaxProd;
+        private System.Windows.Forms.RadioButton rbInferenceMaxMin;
+        private System.Windows.Forms.RadioButton rbInferenceMaxProd;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.RadioButton rbDefuzzificationRightMax;

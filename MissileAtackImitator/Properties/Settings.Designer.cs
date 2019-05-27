@@ -73,7 +73,7 @@ namespace MissileAtackImitatorNS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("RightMax")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Right-Max")]
         public string Defuzzification {
             get {
                 return ((string)(this["Defuzzification"]));
@@ -86,12 +86,12 @@ namespace MissileAtackImitatorNS.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Max-Prod")]
-        public string Aggregation {
+        public string Inference {
             get {
-                return ((string)(this["Aggregation"]));
+                return ((string)(this["Inference"]));
             }
             set {
-                this["Aggregation"] = value;
+                this["Inference"] = value;
             }
         }
     }

@@ -7,10 +7,10 @@
     internal partial class SettingsForm : Form
     {
         private const string noData = "Нет данных";
-        private const string defuzzificationRightMax = "RightMax";
+        private const string defuzzificationRightMax = "Right-Max";
         private const string defuzzificationCentroid = "Centroid";
-        private const string aggregationMaxMin = "MaxMin";
-        private const string aggregationMaxProd = "MaxProd";
+        private const string inferenceMaxMin = "Max-Min";
+        private const string inferenceMaxProd = "Max-Prod";
         private const int maxStringLenght = 80;
         private Controller controller = null;
 
@@ -28,7 +28,7 @@
             int stepsCont = Settings.Default.StepsCount;
             double missileVelocityModule = Settings.Default.MissileVelocityModule;
             double propCoeff = Settings.Default.PropCoeff;
-            string aggregation = Settings.Default.Aggregation;
+            string inference = Settings.Default.Inference;
             string defuzzification = Settings.Default.Defuzzification;
 
             if (pythonScriptFilename == string.Empty)
@@ -36,10 +36,10 @@
             else
                 SetPythonScriptFilename(pythonScriptFilename);
 
-            if (aggregation == aggregationMaxProd)
-                rbAggregationMaxProd.Checked = true;
+            if (inference == inferenceMaxProd)
+                rbInferenceMaxProd.Checked = true;
             else
-                rbAggregationMaxMin.Checked = true;
+                rbInferenceMaxMin.Checked = true;
 
             if (defuzzification == defuzzificationRightMax)
                 rbDefuzzificationRightMax.Checked = true;
@@ -57,7 +57,7 @@
             int stepsCount = (int)nudPointsCount.Value;
             double velocityModule = (double)nudMissileVelocity.Value;
             double propCoeff = (double)nudPropCoeff.Value;
-            string aggregation = string.Empty;
+            string inference = string.Empty;
             string defuzzification = string.Empty;
 
             if (pythonScriptFilename == noData)
@@ -70,13 +70,13 @@
                 }
             }
 
-            if (rbAggregationMaxMin.Checked == true)
+            if (rbInferenceMaxMin.Checked == true)
             {
-                aggregation = aggregationMaxMin;
+                inference = inferenceMaxMin;
             }
             else
             {
-                aggregation = aggregationMaxProd;
+                inference = inferenceMaxProd;
             }
 
             if (rbDefuzzificationCentroid.Checked == true)
@@ -92,7 +92,7 @@
             Settings.Default.StepsCount = stepsCount;
             Settings.Default.MissileVelocityModule = velocityModule;
             Settings.Default.PropCoeff = propCoeff;
-            Settings.Default.Aggregation = aggregation;
+            Settings.Default.Inference = inference;
             Settings.Default.Defuzzification = defuzzification;
 
             SettingsChanged();

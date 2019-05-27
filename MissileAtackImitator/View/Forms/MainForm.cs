@@ -194,6 +194,9 @@
             }
 
             imitationRequest.StepsCount = stepsCount;
+            imitationRequest.Missiles.PropCoeff = Settings.Default.PropCoeff;
+            imitationRequest.Missiles.Inference = Settings.Default.Inference;
+            imitationRequest.Missiles.Defuzzification = Settings.Default.Defuzzification;
 
             return true;
         }
@@ -216,8 +219,9 @@
         {
             dgvData.Set("Количество точек маршрута", Settings.Default.StepsCount);
             dgvData.Set("Скорость ракеты", Settings.Default.MissileVelocityModule);
-            dgvData.Set("Метод вывода", Settings.Default.Aggregation);
+            dgvData.Set("Метод вывода", Settings.Default.Inference);
             dgvData.Set("Метод дефазификации", Settings.Default.Defuzzification);
+            dgvData.Set("Коэффициент пропорциональности обычной ракеты", Settings.Default.PropCoeff);
             UpdateDataGridView();
         }
 
@@ -335,6 +339,19 @@
             BuildDataGridView();
             UpdateDataGridView();
             Draw();
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                StartImitation();
+            }
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                CancellModes();
+            }
         }
     }
 }

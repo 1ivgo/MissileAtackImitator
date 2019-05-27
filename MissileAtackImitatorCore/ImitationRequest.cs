@@ -22,8 +22,8 @@
             public Point Direction;
             public double VelocityModule;
             public double PropCoeff;
-            public string Aggregation; //Max-Min, MaxProd
-            public string Defuzzification; //RightMax, Centroid
+            public string Inference; //Max-Min, Max-Prod
+            public string Defuzzification; //Right-Max, Centroid
         }
     }
 }
