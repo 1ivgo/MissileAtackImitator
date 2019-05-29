@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="View\MissileDraggablePoints.cs" />
     <Compile Include="View\GetValueDialog.cs" />
+    <Compile Include="View\ProgressBarDialog.cs" />
     <EmbeddedResource Include="View\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

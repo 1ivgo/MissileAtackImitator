@@ -25,7 +25,7 @@ namespace MissileAtackImitatorNS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\TrajectoryGenerator\\trajectorygenerator.py")]
         public string PythonScriptFilename {
             get {
                 return ((string)(this["PythonScriptFilename"]));
@@ -37,7 +37,7 @@ namespace MissileAtackImitatorNS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
         public int StepsCount {
             get {
                 return ((int)(this["StepsCount"]));
@@ -49,7 +49,7 @@ namespace MissileAtackImitatorNS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public double MissileVelocityModule {
             get {
                 return ((double)(this["MissileVelocityModule"]));
@@ -61,7 +61,7 @@ namespace MissileAtackImitatorNS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public double PropCoeff {
             get {
                 return ((double)(this["PropCoeff"]));
@@ -73,7 +73,7 @@ namespace MissileAtackImitatorNS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Right-Max")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Centroid")]
         public string Defuzzification {
             get {
                 return ((string)(this["Defuzzification"]));

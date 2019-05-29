@@ -3,19 +3,19 @@
   <Profiles />
   <Settings>
     <Setting Name="PythonScriptFilename" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">.\TrajectoryGenerator\trajectorygenerator.py</Value>
     </Setting>
     <Setting Name="StepsCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="MissileVelocityModule" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="PropCoeff" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="Defuzzification" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Right-Max</Value>
+      <Value Profile="(Default)">Centroid</Value>
     </Setting>
     <Setting Name="Inference" Type="System.String" Scope="User">
       <Value Profile="(Default)">Max-Prod</Value>

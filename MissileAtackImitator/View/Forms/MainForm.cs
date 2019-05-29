@@ -1,7 +1,9 @@
 ﻿namespace MissileAtackImitatorNS.View.Forms
 {
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
     using Data;
     using MissileAtackImitatorCoreNS;
@@ -62,6 +64,18 @@
                 return;
 
             MessageBox.Show(message, Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        internal void AddDGVData(string name, object value)
+        {
+            if (dataGridView.InvokeRequired)
+            {
+                dataGridView.BeginInvoke(new Action(() => dgvData.Set(name, value)));
+            }
+            else
+            {
+                dgvData.Set(name, value);
+            }
         }
 
         private void Draw()
@@ -180,7 +194,7 @@
             double missileVelocityModule = Settings.Default.MissileVelocityModule;
             if (missileVelocityModule == 0)
             {
-                missileVelocityModule = GetValueDialog<double>.Show(this, "Скорость ракеты");
+                missileVelocityModule = GetValueDialog<double>.ShowDialog(this, "Введите скорость ракеты");
                 Settings.Default.MissileVelocityModule = missileVelocityModule;
             }
 
@@ -189,7 +203,7 @@
             int stepsCount = Settings.Default.StepsCount;
             if (stepsCount == 0)
             {
-                stepsCount = GetValueDialog<int>.Show(this, "Количество точек маршрута");
+                stepsCount = GetValueDialog<int>.ShowDialog(this, "Введите количество точек маршрута");
                 Settings.Default.StepsCount = stepsCount;
             }
 
@@ -210,11 +224,6 @@
             OnSettingsFormSettingsChanged();
         }
 
-        private void UpdateDataGridView()
-        {
-            dgvData.ResetBindings();
-        }
-
         private void OnSettingsFormSettingsChanged()
         {
             dgvData.Set("Количество точек маршрута", Settings.Default.StepsCount);
@@ -222,7 +231,6 @@
             dgvData.Set("Метод вывода", Settings.Default.Inference);
             dgvData.Set("Метод дефазификации", Settings.Default.Defuzzification);
             dgvData.Set("Коэффициент пропорциональности обычной ракеты", Settings.Default.PropCoeff);
-            UpdateDataGridView();
         }
 
         private void StartImitation()
@@ -235,7 +243,15 @@
             if (!isCreated)
                 return;
 
-            sceneObjects = controller.DoRequest(imitationRequest, dgvData);
+            StartImitationAsync(imitationRequest);
+
+            ProgressBarDialog.ShowDialog(this);
+        }
+
+        private async void StartImitationAsync(ImitationRequest imitationRequest)
+        {
+            await Task.Run(() => sceneObjects = controller.DoRequest(imitationRequest));
+            ProgressBarDialog.Close();
             Draw();
         }
 
@@ -322,7 +338,7 @@
                 missilePoints.Add(pictureBox, string.Empty, e.Location, scenePointsSize);
                 if (missilePoints.Count == 2 && Settings.Default.MissileVelocityModule == 0)
                 {
-                    double velocityModule = GetValueDialog<double>.Show(this, "Скорость ракеты");
+                    double velocityModule = GetValueDialog<double>.ShowDialog(this, "Введите скорость ракеты");
                     Settings.Default.MissileVelocityModule = velocityModule;
                     CancellModes();
                 }
@@ -337,7 +353,6 @@
         private void MainForm_Load(object sender, System.EventArgs e)
         {
             BuildDataGridView();
-            UpdateDataGridView();
             Draw();
         }
 

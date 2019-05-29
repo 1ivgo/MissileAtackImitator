@@ -4,7 +4,6 @@
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
-    using Data;
     using MissileAtackImitatorCoreNS;
     using MissileAtackImitatorCoreNS.SceneObjects;
     using Properties;
@@ -12,7 +11,7 @@
 
     internal class Controller
     {
-        private const string FilePathToPython = @"python.exe";
+        private const string PythonFilename = @"python.exe";
         private const string PythonSuccessMessage = "Done\r\n";
         private MainForm mainForm = null;
         private List<MovableSceneObject> sceneObjects = new List<MovableSceneObject>();
@@ -22,13 +21,8 @@
             this.mainForm = mainForm;
         }
 
-        internal IEnumerable<IDrawable> DoRequest(ImitationRequest imitationRequest, DGVData dgvData)
+        internal IEnumerable<IDrawable> DoRequest(ImitationRequest imitationRequest)
         {
-            if (dgvData == null)
-            {
-                throw new System.ArgumentNullException(nameof(dgvData));
-            }
-
             Reset();
 
             var requestFilename = "ImitationRequest.json";
@@ -44,7 +38,7 @@
 
             var processInfoStart = new ProcessStartInfo()
             {
-                FileName = FilePathToPython,
+                FileName = PythonFilename,
                 Arguments = string.Format("{0} {1} {2}", pythonScriptFilename, requestFilename, responseFilename),
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -76,7 +70,7 @@
             File.Delete(requestFilename);
 #endif
 
-            GetResponse(responseFilename, sceneObjects, dgvData);
+            GetResponse(responseFilename, sceneObjects);
             return sceneObjects as IEnumerable<IDrawable>;
         }
 
@@ -110,7 +104,7 @@
             sceneObjects.Clear();
         }
 
-        private void GetResponse(string responseFilename, List<MovableSceneObject> sceneObjects, DGVData dgvData)
+        private void GetResponse(string responseFilename, List<MovableSceneObject> sceneObjects)
         {
             var pointSize = new Size(2, 2);
             var response = JsonSaverLoader.Load<ImitationResponse>(responseFilename);
@@ -137,7 +131,7 @@
                 var missileScenePoints = new ScenePoints(missileTrajectory, pointSize, Brushes.Red);
                 var usualMissile = new Missile(missileBitmap, missileScenePoints, response.UsualMissile.IsHit);
                 usualMissile.Hit += (bitmap) => usualMissile.Explosion(explosionBitmap);
-                dgvData.Set("Длина траектории четкой ракеты", usualMissile.TrajectoryLength);
+                mainForm.AddDGVData("Длина траектории четкой ракеты", usualMissile.TrajectoryLength);
 
                 if (aircraft != null)
                 {
@@ -157,7 +151,7 @@
                 var fuzzyMissileScenePoints = new ScenePoints(fuzzyMissileTrajectory, pointSize, Brushes.Blue);
                 var fuzzyMissile = new Missile(missileBitmap, fuzzyMissileScenePoints, response.FuzzyMissile.IsHit);
                 fuzzyMissile.Hit += (bitmap) => fuzzyMissile.Explosion(explosionBitmap);
-                dgvData.Set("Длина траектории нечеткой ракеты", fuzzyMissile.TrajectoryLength);
+                mainForm.AddDGVData("Длина траектории нечеткой ракеты", fuzzyMissile.TrajectoryLength);
                 
                 if (aircraft != null)
                 {
