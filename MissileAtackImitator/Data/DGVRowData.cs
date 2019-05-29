@@ -1,8 +1,8 @@
 ﻿namespace MissileAtackImitatorNS.Data
 {
-    class CurrentInfoDGVRow
+    class DGVRowData
     {
-        public CurrentInfoDGVRow(string name, object value)
+        public DGVRowData(string name, object value)
         {
             Name = name;
             Value = value;

@@ -22,7 +22,7 @@
             this.mainForm = mainForm;
         }
 
-        internal IEnumerable<IDrawable> DoRequest(ImitationRequest imitationRequest, CurrentInfoDGV dgvData)
+        internal IEnumerable<IDrawable> DoRequest(ImitationRequest imitationRequest, DGVData dgvData)
         {
             if (dgvData == null)
             {
@@ -72,7 +72,10 @@
                 }
             }
 
+#if (!DEBUG)
             File.Delete(requestFilename);
+#endif
+
             GetResponse(responseFilename, sceneObjects, dgvData);
             return sceneObjects as IEnumerable<IDrawable>;
         }
@@ -107,7 +110,7 @@
             sceneObjects.Clear();
         }
 
-        private void GetResponse(string responseFilename, List<MovableSceneObject> sceneObjects, CurrentInfoDGV dgvData)
+        private void GetResponse(string responseFilename, List<MovableSceneObject> sceneObjects, DGVData dgvData)
         {
             var pointSize = new Size(2, 2);
             var response = JsonSaverLoader.Load<ImitationResponse>(responseFilename);
@@ -167,6 +170,10 @@
             {
                 mainForm.ShowMessage("Нет траектории нечеткой ракеты");
             }
+
+#if (!DEBUG)
+            File.Delete(responseFilename);
+#endif
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     using System.ComponentModel;
 
-    internal class CurrentInfoDGV : BindingList<CurrentInfoDGVRow>
+    internal class DGVData : BindingList<DGVRowData>
     {
-        public CurrentInfoDGVRow this [string name]
+        public DGVRowData this [string name]
         {
             get
             {
@@ -37,7 +37,7 @@
                 throw new System.Exception("Попытка добавить в таблицу уже существующую строку");
             }
 
-            Add(new CurrentInfoDGVRow(name, value));
+            Add(new DGVRowData(name, value));
         }
 
         public void Set(string name, object value)

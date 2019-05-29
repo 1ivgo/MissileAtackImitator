@@ -18,7 +18,7 @@
         private MissileDraggablePoints missilePoints = null;
         private Size scenePointsSize = new Size(10, 10);
         private IEnumerable<IDrawable> sceneObjects = null;
-        private CurrentInfoDGV dgvData = null;
+        private DGVData dgvData = null;
 
         public MainForm()
         {
@@ -203,7 +203,7 @@
 
         private void BuildDataGridView()
         {
-            dgvData = new CurrentInfoDGV();
+            dgvData = new DGVData();
             dataGridView.DataSource = dgvData;
             dataGridView.Columns["Name"].HeaderText = "Параметер";
             dataGridView.Columns["Value"].HeaderText = "Значение";

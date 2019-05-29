@@ -45,8 +45,6 @@ class TrajectoryGenerator:
         usual.launchPoint = requestPointToNPPoint(settings['LaunchPoint'])
         direction = requestPointToNPPoint(settings['Direction']) - usual.launchPoint
         usual.startVelocity = l.unitVector(direction) * settings['VelocityModule']
-
-        print(settings['PropCoeff'], file=open('log', 'a'))
         usual.controller = missile.controllers.Proportional(settings['PropCoeff'])
 
         fuzzy = usual.copy()
