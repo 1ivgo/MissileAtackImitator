@@ -353,5 +353,21 @@
                 CancellModes();
             }
         }
+
+        private void dataGridView_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            int index = e.RowIndex;
+            DataGridViewRow row = dataGridView.Rows[index];
+
+            if (row.Cells["Name"].Value.ToString() == "Длина траектории четкой ракеты")
+            {
+                row.DefaultCellStyle.ForeColor = Color.Red;
+            }
+
+            if (row.Cells["Name"].Value.ToString() == "Длина траектории нечеткой ракеты")
+            {
+                row.DefaultCellStyle.ForeColor = Color.Blue;
+            }
+        }
     }
 }

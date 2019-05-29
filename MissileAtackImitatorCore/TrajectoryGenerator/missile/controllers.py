@@ -25,9 +25,9 @@ class Fuzzy:
         self._setDefuzzMethod(defuzzMethod)
 
     def _defineUniversalSets(self):
-        self._approachVelocityX = np.linspace(0, 50)
+        self._approachVelocityX = np.linspace(0, 10)
         self._sightAngleDeltaX  = np.linspace(0, 2*np.pi)
-        self._distanceX         = np.linspace(0, 10**10)
+        self._distanceX         = np.linspace(0, 10**2)
         self._rotationAngleX    = np.linspace(0, self._angleLimit, 9)
     
     def _defineMemberFunctions(self):
