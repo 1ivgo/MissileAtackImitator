@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MissileAtackImitator", "Mis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MissileAtackImitatorCore", "MissileAtackImitatorCore\MissileAtackImitatorCore.csproj", "{3BB9387E-9DE3-4B69-BB18-63F8EC23EEB9}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupMissileAtackImitator", "SetupMissileAtackImitator\SetupMissileAtackImitator.vdproj", "{47073C6A-149F-4004-AA39-8BFC8E23C592}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,12 @@ Global
 		{3BB9387E-9DE3-4B69-BB18-63F8EC23EEB9}.Release|x64.Build.0 = Release|Any CPU
 		{3BB9387E-9DE3-4B69-BB18-63F8EC23EEB9}.Release|x86.ActiveCfg = Release|Any CPU
 		{3BB9387E-9DE3-4B69-BB18-63F8EC23EEB9}.Release|x86.Build.0 = Release|Any CPU
+		{47073C6A-149F-4004-AA39-8BFC8E23C592}.Debug|Any CPU.ActiveCfg = Debug
+		{47073C6A-149F-4004-AA39-8BFC8E23C592}.Debug|x64.ActiveCfg = Debug
+		{47073C6A-149F-4004-AA39-8BFC8E23C592}.Debug|x86.ActiveCfg = Debug
+		{47073C6A-149F-4004-AA39-8BFC8E23C592}.Release|Any CPU.ActiveCfg = Release
+		{47073C6A-149F-4004-AA39-8BFC8E23C592}.Release|x64.ActiveCfg = Release
+		{47073C6A-149F-4004-AA39-8BFC8E23C592}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

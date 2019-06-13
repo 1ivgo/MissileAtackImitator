@@ -8,7 +8,7 @@
     {
         static Form form = null;
 
-        internal static bool ShowDialog(Form mainForm)
+        internal static bool ShowDialog(Form mainForm, string message)
         {
             bool isFinished = true;
 
@@ -35,7 +35,7 @@
 
             var lb = new Label()
             {
-                Text = "Подождите, идет выполнение операции",
+                Text = message,
                 AutoSize = true,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,

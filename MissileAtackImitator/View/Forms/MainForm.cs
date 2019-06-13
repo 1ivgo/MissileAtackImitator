@@ -78,6 +78,13 @@
             }
         }
 
+        internal void DoActionWithProgressBar(string message, Action action)
+        {
+            StartActionWithProgressBarAsync(action);
+            ProgressBarDialog.ShowDialog(this, message);
+        }
+
+
         private void Draw()
         {
             bufferedGraphics.Graphics.Clear(Color.White);
@@ -243,16 +250,16 @@
             if (!isCreated)
                 return;
 
-            StartImitationAsync(imitationRequest);
+            DoActionWithProgressBar("Подождите, идет выполнение операции",
+                new Action(() => sceneObjects = controller.DoRequest(imitationRequest)));
 
-            ProgressBarDialog.ShowDialog(this);
+            Draw();
         }
 
-        private async void StartImitationAsync(ImitationRequest imitationRequest)
+        private async void StartActionWithProgressBarAsync(Action action)
         {
-            await Task.Run(() => sceneObjects = controller.DoRequest(imitationRequest));
+            await Task.Run(action);
             ProgressBarDialog.Close();
-            Draw();
         }
 
         private void timer_Tick(object sender, System.EventArgs e)
@@ -291,6 +298,7 @@
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            controller.Clear();
             Settings.Default.Save();
         }
 
@@ -317,7 +325,6 @@
                 tsbtAddMissile.Checked = true;
                 return;
             }
-
 
             SetAddMissileMode();
         }
@@ -352,6 +359,8 @@
 
         private void MainForm_Load(object sender, System.EventArgs e)
         {
+            controller.InitProgram();
+
             BuildDataGridView();
             Draw();
         }
